@@ -1,8 +1,8 @@
 extern crate protoc_grpcio;
-
 use curl::easy::Easy;
 use std::fs::File;
 use std::io::Write;
+use protoc_rust::Customize;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut proto = File::create("src/protos/rpc.proto")?;
@@ -18,7 +18,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }).unwrap();
     easy.perform().unwrap();
 
-    protoc_grpcio::compile_grpc_protos(&["rpc.proto"], &[proto_root], &output_root, None)
+    protoc_grpcio::compile_grpc_protos(&["rpc.proto"], &[proto_root], &output_root, Some(Customize {
+        serde_derive: Some(true),
+        ..Default::default()
+    }))
         .expect("Failed to compile gRPC definitions!");
 
     Ok(())

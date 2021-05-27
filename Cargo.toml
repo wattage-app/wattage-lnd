@@ -9,9 +9,10 @@ edition = "2018"
 [dependencies]
 grpcio = { version = "0.8", default-features = false, features = ["openssl", "protobuf-codec"] }
 hex = "0.4.3"
-protobuf = "2.22.1"
+protobuf = { version = "2.22.1", features = ["serde", "serde_derive"]}
 futures = { version = "0.3.*" }
 
 [build-dependencies]
 protoc-grpcio = "3.0.0"
 curl = "0.4.37"
+protoc-rust = "2.0"
