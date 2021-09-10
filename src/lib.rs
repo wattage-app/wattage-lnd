@@ -4,12 +4,13 @@ pub mod walletunlocker;
 pub mod walletunlocker_grpc;
 pub mod stateservice;
 pub mod stateservice_grpc;
-
+pub mod loopd;
 use std::sync::Arc;
 use crate::rpc_grpc::LightningClient;
 use grpcio::{CallOption, MetadataBuilder, ChannelBuilder, ChannelCredentialsBuilder, EnvBuilder, Channel};
 use crate::walletunlocker_grpc::WalletUnlockerClient;
 use crate::stateservice_grpc::StateClient;
+use crate::loopd::client_grpc::SwapClientClient;
 
 pub fn get_secure_channel_client(cert_path: &str, addr: &str) -> LightningClient {
     let ch = generate_secure_channel(cert_path, addr);
@@ -37,6 +38,12 @@ fn generate_secure_channel(cert_path: &str, addr: &str) -> Channel {
         .build();
 
     ChannelBuilder::new(env).secure_connect(addr, creds)
+}
+
+pub fn get_secure_channel_loop_client(cert_path: &str, addr: &str) -> SwapClientClient {
+	let ch = generate_secure_channel(cert_path, addr);
+
+	SwapClientClient::new(ch)
 }
 
 pub fn lnd_req_opt(macaroon: &Vec<u8>) -> CallOption {
