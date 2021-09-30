@@ -1,16 +1,17 @@
 pub mod rpc;
 pub mod rpc_grpc;
+pub mod invoices;
+pub mod invoices_grpc;
 pub mod walletunlocker;
 pub mod walletunlocker_grpc;
 pub mod stateservice;
 pub mod stateservice_grpc;
-pub mod loopd;
 use std::sync::Arc;
 use crate::rpc_grpc::LightningClient;
 use grpcio::{CallOption, MetadataBuilder, ChannelBuilder, ChannelCredentialsBuilder, EnvBuilder, Channel};
 use crate::walletunlocker_grpc::WalletUnlockerClient;
 use crate::stateservice_grpc::StateClient;
-use crate::loopd::client_grpc::SwapClientClient;
+use crate::invoices_grpc::InvoicesClient;
 
 pub fn get_secure_channel_client(cert_path: &str, addr: &str) -> LightningClient {
     let ch = generate_secure_channel(cert_path, addr);
@@ -30,6 +31,12 @@ pub fn get_secure_channel_stateservice(cert_path: &str, addr: &str) -> StateClie
 	StateClient::new(ch)
 }
 
+pub fn get_secure_channel_invoices(cert_path: &str, addr: &str) -> InvoicesClient {
+	let ch = generate_secure_channel(cert_path, addr);
+
+	InvoicesClient::new(ch)
+}
+
 fn generate_secure_channel(cert_path: &str, addr: &str) -> Channel {
     let ca_pem = std::fs::read_to_string(cert_path).expect("Could not read CA Cert file.");
     let env = Arc::new(EnvBuilder::new().build());
@@ -38,12 +45,6 @@ fn generate_secure_channel(cert_path: &str, addr: &str) -> Channel {
         .build();
 
     ChannelBuilder::new(env).secure_connect(addr, creds)
-}
-
-pub fn get_secure_channel_loop_client(cert_path: &str, addr: &str) -> SwapClientClient {
-	let ch = generate_secure_channel(cert_path, addr);
-
-	SwapClientClient::new(ch)
 }
 
 pub fn lnd_req_opt(macaroon: &Vec<u8>) -> CallOption {
