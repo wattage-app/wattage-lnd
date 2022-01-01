@@ -8,7 +8,13 @@ use protoc_rust::Customize;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let proto_root = "src/protos";
     let output_root = "src";
-	let root_protos = vec!["rpc.proto", "walletunlocker.proto", "stateservice.proto", "invoices.proto"];
+	let root_protos = vec![
+		"rpc.proto",
+		"walletunlocker.proto",
+		"stateservice.proto",
+		"invoices.proto",
+		"router.proto",
+	];
 
 	compile_protos(proto_root, output_root, root_protos);
     Ok(())

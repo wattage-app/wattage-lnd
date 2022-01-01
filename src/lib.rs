@@ -6,12 +6,16 @@ pub mod walletunlocker;
 pub mod walletunlocker_grpc;
 pub mod stateservice;
 pub mod stateservice_grpc;
+pub mod router;
+pub mod router_grpc;
+
 use std::sync::Arc;
 use crate::rpc_grpc::LightningClient;
 use grpcio::{CallOption, MetadataBuilder, ChannelBuilder, ChannelCredentialsBuilder, EnvBuilder, Channel};
 use crate::walletunlocker_grpc::WalletUnlockerClient;
 use crate::stateservice_grpc::StateClient;
 use crate::invoices_grpc::InvoicesClient;
+use crate::router_grpc::RouterClient;
 
 pub fn get_secure_channel_client(cert_path: &str, addr: &str) -> LightningClient {
     let ch = generate_secure_channel(cert_path, addr);
@@ -35,6 +39,12 @@ pub fn get_secure_channel_invoices(cert_path: &str, addr: &str) -> InvoicesClien
 	let ch = generate_secure_channel(cert_path, addr);
 
 	InvoicesClient::new(ch)
+}
+
+pub fn get_secure_channel_router(cert_path: &str, addr: &str) -> RouterClient {
+	let ch = generate_secure_channel(cert_path, addr);
+
+	RouterClient::new(ch)
 }
 
 fn generate_secure_channel(cert_path: &str, addr: &str) -> Channel {
