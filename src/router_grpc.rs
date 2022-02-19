@@ -16,14 +16,14 @@
 #![allow(unused_imports)]
 #![allow(unused_results)]
 
-const METHOD_ROUTER_SEND_PAYMENT_V2: ::grpcio::Method<super::router::SendPaymentRequest, super::rpc::Payment> = ::grpcio::Method {
+const METHOD_ROUTER_SEND_PAYMENT_V2: ::grpcio::Method<super::router::SendPaymentRequest, super::lightning::Payment> = ::grpcio::Method {
     ty: ::grpcio::MethodType::ServerStreaming,
     name: "/routerrpc.Router/SendPaymentV2",
     req_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
     resp_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
 };
 
-const METHOD_ROUTER_TRACK_PAYMENT_V2: ::grpcio::Method<super::router::TrackPaymentRequest, super::rpc::Payment> = ::grpcio::Method {
+const METHOD_ROUTER_TRACK_PAYMENT_V2: ::grpcio::Method<super::router::TrackPaymentRequest, super::lightning::Payment> = ::grpcio::Method {
     ty: ::grpcio::MethodType::ServerStreaming,
     name: "/routerrpc.Router/TrackPaymentV2",
     req_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
@@ -44,7 +44,7 @@ const METHOD_ROUTER_SEND_TO_ROUTE: ::grpcio::Method<super::router::SendToRouteRe
     resp_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
 };
 
-const METHOD_ROUTER_SEND_TO_ROUTE_V2: ::grpcio::Method<super::router::SendToRouteRequest, super::rpc::HTLCAttempt> = ::grpcio::Method {
+const METHOD_ROUTER_SEND_TO_ROUTE_V2: ::grpcio::Method<super::router::SendToRouteRequest, super::lightning::HTLCAttempt> = ::grpcio::Method {
     ty: ::grpcio::MethodType::Unary,
     name: "/routerrpc.Router/SendToRouteV2",
     req_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
@@ -147,19 +147,19 @@ impl RouterClient {
         }
     }
 
-    pub fn send_payment_v2_opt(&self, req: &super::router::SendPaymentRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::rpc::Payment>> {
+    pub fn send_payment_v2_opt(&self, req: &super::router::SendPaymentRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::lightning::Payment>> {
         self.client.server_streaming(&METHOD_ROUTER_SEND_PAYMENT_V2, req, opt)
     }
 
-    pub fn send_payment_v2(&self, req: &super::router::SendPaymentRequest) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::rpc::Payment>> {
+    pub fn send_payment_v2(&self, req: &super::router::SendPaymentRequest) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::lightning::Payment>> {
         self.send_payment_v2_opt(req, ::grpcio::CallOption::default())
     }
 
-    pub fn track_payment_v2_opt(&self, req: &super::router::TrackPaymentRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::rpc::Payment>> {
+    pub fn track_payment_v2_opt(&self, req: &super::router::TrackPaymentRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::lightning::Payment>> {
         self.client.server_streaming(&METHOD_ROUTER_TRACK_PAYMENT_V2, req, opt)
     }
 
-    pub fn track_payment_v2(&self, req: &super::router::TrackPaymentRequest) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::rpc::Payment>> {
+    pub fn track_payment_v2(&self, req: &super::router::TrackPaymentRequest) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::lightning::Payment>> {
         self.track_payment_v2_opt(req, ::grpcio::CallOption::default())
     }
 
@@ -195,19 +195,19 @@ impl RouterClient {
         self.send_to_route_async_opt(req, ::grpcio::CallOption::default())
     }
 
-    pub fn send_to_route_v2_opt(&self, req: &super::router::SendToRouteRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<super::rpc::HTLCAttempt> {
+    pub fn send_to_route_v2_opt(&self, req: &super::router::SendToRouteRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<super::lightning::HTLCAttempt> {
         self.client.unary_call(&METHOD_ROUTER_SEND_TO_ROUTE_V2, req, opt)
     }
 
-    pub fn send_to_route_v2(&self, req: &super::router::SendToRouteRequest) -> ::grpcio::Result<super::rpc::HTLCAttempt> {
+    pub fn send_to_route_v2(&self, req: &super::router::SendToRouteRequest) -> ::grpcio::Result<super::lightning::HTLCAttempt> {
         self.send_to_route_v2_opt(req, ::grpcio::CallOption::default())
     }
 
-    pub fn send_to_route_v2_async_opt(&self, req: &super::router::SendToRouteRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::rpc::HTLCAttempt>> {
+    pub fn send_to_route_v2_async_opt(&self, req: &super::router::SendToRouteRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::lightning::HTLCAttempt>> {
         self.client.unary_call_async(&METHOD_ROUTER_SEND_TO_ROUTE_V2, req, opt)
     }
 
-    pub fn send_to_route_v2_async(&self, req: &super::router::SendToRouteRequest) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::rpc::HTLCAttempt>> {
+    pub fn send_to_route_v2_async(&self, req: &super::router::SendToRouteRequest) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::lightning::HTLCAttempt>> {
         self.send_to_route_v2_async_opt(req, ::grpcio::CallOption::default())
     }
 
@@ -376,11 +376,11 @@ impl RouterClient {
 }
 
 pub trait Router {
-    fn send_payment_v2(&mut self, ctx: ::grpcio::RpcContext, req: super::router::SendPaymentRequest, sink: ::grpcio::ServerStreamingSink<super::rpc::Payment>);
-    fn track_payment_v2(&mut self, ctx: ::grpcio::RpcContext, req: super::router::TrackPaymentRequest, sink: ::grpcio::ServerStreamingSink<super::rpc::Payment>);
+    fn send_payment_v2(&mut self, ctx: ::grpcio::RpcContext, req: super::router::SendPaymentRequest, sink: ::grpcio::ServerStreamingSink<super::lightning::Payment>);
+    fn track_payment_v2(&mut self, ctx: ::grpcio::RpcContext, req: super::router::TrackPaymentRequest, sink: ::grpcio::ServerStreamingSink<super::lightning::Payment>);
     fn estimate_route_fee(&mut self, ctx: ::grpcio::RpcContext, req: super::router::RouteFeeRequest, sink: ::grpcio::UnarySink<super::router::RouteFeeResponse>);
     fn send_to_route(&mut self, ctx: ::grpcio::RpcContext, req: super::router::SendToRouteRequest, sink: ::grpcio::UnarySink<super::router::SendToRouteResponse>);
-    fn send_to_route_v2(&mut self, ctx: ::grpcio::RpcContext, req: super::router::SendToRouteRequest, sink: ::grpcio::UnarySink<super::rpc::HTLCAttempt>);
+    fn send_to_route_v2(&mut self, ctx: ::grpcio::RpcContext, req: super::router::SendToRouteRequest, sink: ::grpcio::UnarySink<super::lightning::HTLCAttempt>);
     fn reset_mission_control(&mut self, ctx: ::grpcio::RpcContext, req: super::router::ResetMissionControlRequest, sink: ::grpcio::UnarySink<super::router::ResetMissionControlResponse>);
     fn query_mission_control(&mut self, ctx: ::grpcio::RpcContext, req: super::router::QueryMissionControlRequest, sink: ::grpcio::UnarySink<super::router::QueryMissionControlResponse>);
     fn x_import_mission_control(&mut self, ctx: ::grpcio::RpcContext, req: super::router::XImportMissionControlRequest, sink: ::grpcio::UnarySink<super::router::XImportMissionControlResponse>);

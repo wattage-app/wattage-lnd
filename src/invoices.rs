@@ -316,7 +316,7 @@ pub struct AddHoldInvoiceRequest {
     pub expiry: i64,
     pub fallback_addr: ::std::string::String,
     pub cltv_expiry: u64,
-    pub route_hints: ::protobuf::RepeatedField<super::rpc::RouteHint>,
+    pub route_hints: ::protobuf::RepeatedField<super::lightning::RouteHint>,
     pub private: bool,
     // special fields
     #[cfg_attr(feature = "with-serde", serde(skip))]
@@ -503,7 +503,7 @@ impl AddHoldInvoiceRequest {
     // repeated .lnrpc.RouteHint route_hints = 8;
 
 
-    pub fn get_route_hints(&self) -> &[super::rpc::RouteHint] {
+    pub fn get_route_hints(&self) -> &[super::lightning::RouteHint] {
         &self.route_hints
     }
     pub fn clear_route_hints(&mut self) {
@@ -511,17 +511,17 @@ impl AddHoldInvoiceRequest {
     }
 
     // Param is passed by value, moved
-    pub fn set_route_hints(&mut self, v: ::protobuf::RepeatedField<super::rpc::RouteHint>) {
+    pub fn set_route_hints(&mut self, v: ::protobuf::RepeatedField<super::lightning::RouteHint>) {
         self.route_hints = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_route_hints(&mut self) -> &mut ::protobuf::RepeatedField<super::rpc::RouteHint> {
+    pub fn mut_route_hints(&mut self) -> &mut ::protobuf::RepeatedField<super::lightning::RouteHint> {
         &mut self.route_hints
     }
 
     // Take field
-    pub fn take_route_hints(&mut self) -> ::protobuf::RepeatedField<super::rpc::RouteHint> {
+    pub fn take_route_hints(&mut self) -> ::protobuf::RepeatedField<super::lightning::RouteHint> {
         ::std::mem::replace(&mut self.route_hints, ::protobuf::RepeatedField::new())
     }
 
@@ -764,7 +764,7 @@ impl ::protobuf::Message for AddHoldInvoiceRequest {
                 |m: &AddHoldInvoiceRequest| { &m.cltv_expiry },
                 |m: &mut AddHoldInvoiceRequest| { &mut m.cltv_expiry },
             ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::rpc::RouteHint>>(
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::lightning::RouteHint>>(
                 "route_hints",
                 |m: &AddHoldInvoiceRequest| { &m.route_hints },
                 |m: &mut AddHoldInvoiceRequest| { &mut m.route_hints },
@@ -821,6 +821,8 @@ impl ::protobuf::reflect::ProtobufValue for AddHoldInvoiceRequest {
 pub struct AddHoldInvoiceResp {
     // message fields
     pub payment_request: ::std::string::String,
+    pub add_index: u64,
+    pub payment_addr: ::std::vec::Vec<u8>,
     // special fields
     #[cfg_attr(feature = "with-serde", serde(skip))]
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -864,6 +866,47 @@ impl AddHoldInvoiceResp {
     pub fn take_payment_request(&mut self) -> ::std::string::String {
         ::std::mem::replace(&mut self.payment_request, ::std::string::String::new())
     }
+
+    // uint64 add_index = 2;
+
+
+    pub fn get_add_index(&self) -> u64 {
+        self.add_index
+    }
+    pub fn clear_add_index(&mut self) {
+        self.add_index = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_add_index(&mut self, v: u64) {
+        self.add_index = v;
+    }
+
+    // bytes payment_addr = 3;
+
+
+    pub fn get_payment_addr(&self) -> &[u8] {
+        &self.payment_addr
+    }
+    pub fn clear_payment_addr(&mut self) {
+        self.payment_addr.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_payment_addr(&mut self, v: ::std::vec::Vec<u8>) {
+        self.payment_addr = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_payment_addr(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.payment_addr
+    }
+
+    // Take field
+    pub fn take_payment_addr(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.payment_addr, ::std::vec::Vec::new())
+    }
 }
 
 impl ::protobuf::Message for AddHoldInvoiceResp {
@@ -877,6 +920,16 @@ impl ::protobuf::Message for AddHoldInvoiceResp {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.payment_request)?;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.add_index = tmp;
+                },
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.payment_addr)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -893,6 +946,12 @@ impl ::protobuf::Message for AddHoldInvoiceResp {
         if !self.payment_request.is_empty() {
             my_size += ::protobuf::rt::string_size(1, &self.payment_request);
         }
+        if self.add_index != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.add_index, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.payment_addr.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(3, &self.payment_addr);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -901,6 +960,12 @@ impl ::protobuf::Message for AddHoldInvoiceResp {
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
         if !self.payment_request.is_empty() {
             os.write_string(1, &self.payment_request)?;
+        }
+        if self.add_index != 0 {
+            os.write_uint64(2, self.add_index)?;
+        }
+        if !self.payment_addr.is_empty() {
+            os.write_bytes(3, &self.payment_addr)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -945,6 +1010,16 @@ impl ::protobuf::Message for AddHoldInvoiceResp {
                 |m: &AddHoldInvoiceResp| { &m.payment_request },
                 |m: &mut AddHoldInvoiceResp| { &mut m.payment_request },
             ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "add_index",
+                |m: &AddHoldInvoiceResp| { &m.add_index },
+                |m: &mut AddHoldInvoiceResp| { &mut m.add_index },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "payment_addr",
+                |m: &AddHoldInvoiceResp| { &m.payment_addr },
+                |m: &mut AddHoldInvoiceResp| { &mut m.payment_addr },
+            ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<AddHoldInvoiceResp>(
                 "AddHoldInvoiceResp",
                 fields,
@@ -962,6 +1037,8 @@ impl ::protobuf::Message for AddHoldInvoiceResp {
 impl ::protobuf::Clear for AddHoldInvoiceResp {
     fn clear(&mut self) {
         self.payment_request.clear();
+        self.add_index = 0;
+        self.payment_addr.clear();
         self.unknown_fields.clear();
     }
 }
@@ -1421,29 +1498,463 @@ impl ::protobuf::reflect::ProtobufValue for SubscribeSingleInvoiceRequest {
     }
 }
 
+#[derive(PartialEq,Clone,Default)]
+#[cfg_attr(feature = "with-serde", derive(::serde::Serialize, ::serde::Deserialize))]
+pub struct LookupInvoiceMsg {
+    // message fields
+    pub lookup_modifier: LookupModifier,
+    // message oneof groups
+    pub invoice_ref: ::std::option::Option<LookupInvoiceMsg_oneof_invoice_ref>,
+    // special fields
+    #[cfg_attr(feature = "with-serde", serde(skip))]
+    pub unknown_fields: ::protobuf::UnknownFields,
+    #[cfg_attr(feature = "with-serde", serde(skip))]
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a LookupInvoiceMsg {
+    fn default() -> &'a LookupInvoiceMsg {
+        <LookupInvoiceMsg as ::protobuf::Message>::default_instance()
+    }
+}
+
+#[derive(Clone,PartialEq,Debug)]
+#[cfg_attr(feature = "with-serde", derive(::serde::Serialize, ::serde::Deserialize))]
+pub enum LookupInvoiceMsg_oneof_invoice_ref {
+    payment_hash(::std::vec::Vec<u8>),
+    payment_addr(::std::vec::Vec<u8>),
+    set_id(::std::vec::Vec<u8>),
+}
+
+impl LookupInvoiceMsg {
+    pub fn new() -> LookupInvoiceMsg {
+        ::std::default::Default::default()
+    }
+
+    // bytes payment_hash = 1;
+
+
+    pub fn get_payment_hash(&self) -> &[u8] {
+        match self.invoice_ref {
+            ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_hash(ref v)) => v,
+            _ => &[],
+        }
+    }
+    pub fn clear_payment_hash(&mut self) {
+        self.invoice_ref = ::std::option::Option::None;
+    }
+
+    pub fn has_payment_hash(&self) -> bool {
+        match self.invoice_ref {
+            ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_hash(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_payment_hash(&mut self, v: ::std::vec::Vec<u8>) {
+        self.invoice_ref = ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_hash(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_payment_hash(&mut self) -> &mut ::std::vec::Vec<u8> {
+        if let ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_hash(_)) = self.invoice_ref {
+        } else {
+            self.invoice_ref = ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_hash(::std::vec::Vec::new()));
+        }
+        match self.invoice_ref {
+            ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_hash(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_payment_hash(&mut self) -> ::std::vec::Vec<u8> {
+        if self.has_payment_hash() {
+            match self.invoice_ref.take() {
+                ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_hash(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ::std::vec::Vec::new()
+        }
+    }
+
+    // bytes payment_addr = 2;
+
+
+    pub fn get_payment_addr(&self) -> &[u8] {
+        match self.invoice_ref {
+            ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_addr(ref v)) => v,
+            _ => &[],
+        }
+    }
+    pub fn clear_payment_addr(&mut self) {
+        self.invoice_ref = ::std::option::Option::None;
+    }
+
+    pub fn has_payment_addr(&self) -> bool {
+        match self.invoice_ref {
+            ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_addr(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_payment_addr(&mut self, v: ::std::vec::Vec<u8>) {
+        self.invoice_ref = ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_addr(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_payment_addr(&mut self) -> &mut ::std::vec::Vec<u8> {
+        if let ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_addr(_)) = self.invoice_ref {
+        } else {
+            self.invoice_ref = ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_addr(::std::vec::Vec::new()));
+        }
+        match self.invoice_ref {
+            ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_addr(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_payment_addr(&mut self) -> ::std::vec::Vec<u8> {
+        if self.has_payment_addr() {
+            match self.invoice_ref.take() {
+                ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_addr(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ::std::vec::Vec::new()
+        }
+    }
+
+    // bytes set_id = 3;
+
+
+    pub fn get_set_id(&self) -> &[u8] {
+        match self.invoice_ref {
+            ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::set_id(ref v)) => v,
+            _ => &[],
+        }
+    }
+    pub fn clear_set_id(&mut self) {
+        self.invoice_ref = ::std::option::Option::None;
+    }
+
+    pub fn has_set_id(&self) -> bool {
+        match self.invoice_ref {
+            ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::set_id(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_set_id(&mut self, v: ::std::vec::Vec<u8>) {
+        self.invoice_ref = ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::set_id(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_set_id(&mut self) -> &mut ::std::vec::Vec<u8> {
+        if let ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::set_id(_)) = self.invoice_ref {
+        } else {
+            self.invoice_ref = ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::set_id(::std::vec::Vec::new()));
+        }
+        match self.invoice_ref {
+            ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::set_id(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_set_id(&mut self) -> ::std::vec::Vec<u8> {
+        if self.has_set_id() {
+            match self.invoice_ref.take() {
+                ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::set_id(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ::std::vec::Vec::new()
+        }
+    }
+
+    // .invoicesrpc.LookupModifier lookup_modifier = 4;
+
+
+    pub fn get_lookup_modifier(&self) -> LookupModifier {
+        self.lookup_modifier
+    }
+    pub fn clear_lookup_modifier(&mut self) {
+        self.lookup_modifier = LookupModifier::DEFAULT;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_lookup_modifier(&mut self, v: LookupModifier) {
+        self.lookup_modifier = v;
+    }
+}
+
+impl ::protobuf::Message for LookupInvoiceMsg {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.invoice_ref = ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_hash(is.read_bytes()?));
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.invoice_ref = ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::payment_addr(is.read_bytes()?));
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.invoice_ref = ::std::option::Option::Some(LookupInvoiceMsg_oneof_invoice_ref::set_id(is.read_bytes()?));
+                },
+                4 => {
+                    ::protobuf::rt::read_proto3_enum_with_unknown_fields_into(wire_type, is, &mut self.lookup_modifier, 4, &mut self.unknown_fields)?
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.lookup_modifier != LookupModifier::DEFAULT {
+            my_size += ::protobuf::rt::enum_size(4, self.lookup_modifier);
+        }
+        if let ::std::option::Option::Some(ref v) = self.invoice_ref {
+            match v {
+                &LookupInvoiceMsg_oneof_invoice_ref::payment_hash(ref v) => {
+                    my_size += ::protobuf::rt::bytes_size(1, &v);
+                },
+                &LookupInvoiceMsg_oneof_invoice_ref::payment_addr(ref v) => {
+                    my_size += ::protobuf::rt::bytes_size(2, &v);
+                },
+                &LookupInvoiceMsg_oneof_invoice_ref::set_id(ref v) => {
+                    my_size += ::protobuf::rt::bytes_size(3, &v);
+                },
+            };
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.lookup_modifier != LookupModifier::DEFAULT {
+            os.write_enum(4, ::protobuf::ProtobufEnum::value(&self.lookup_modifier))?;
+        }
+        if let ::std::option::Option::Some(ref v) = self.invoice_ref {
+            match v {
+                &LookupInvoiceMsg_oneof_invoice_ref::payment_hash(ref v) => {
+                    os.write_bytes(1, v)?;
+                },
+                &LookupInvoiceMsg_oneof_invoice_ref::payment_addr(ref v) => {
+                    os.write_bytes(2, v)?;
+                },
+                &LookupInvoiceMsg_oneof_invoice_ref::set_id(ref v) => {
+                    os.write_bytes(3, v)?;
+                },
+            };
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> LookupInvoiceMsg {
+        LookupInvoiceMsg::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_singular_bytes_accessor::<_>(
+                "payment_hash",
+                LookupInvoiceMsg::has_payment_hash,
+                LookupInvoiceMsg::get_payment_hash,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_bytes_accessor::<_>(
+                "payment_addr",
+                LookupInvoiceMsg::has_payment_addr,
+                LookupInvoiceMsg::get_payment_addr,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_bytes_accessor::<_>(
+                "set_id",
+                LookupInvoiceMsg::has_set_id,
+                LookupInvoiceMsg::get_set_id,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeEnum<LookupModifier>>(
+                "lookup_modifier",
+                |m: &LookupInvoiceMsg| { &m.lookup_modifier },
+                |m: &mut LookupInvoiceMsg| { &mut m.lookup_modifier },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<LookupInvoiceMsg>(
+                "LookupInvoiceMsg",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static LookupInvoiceMsg {
+        static instance: ::protobuf::rt::LazyV2<LookupInvoiceMsg> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(LookupInvoiceMsg::new)
+    }
+}
+
+impl ::protobuf::Clear for LookupInvoiceMsg {
+    fn clear(&mut self) {
+        self.invoice_ref = ::std::option::Option::None;
+        self.invoice_ref = ::std::option::Option::None;
+        self.invoice_ref = ::std::option::Option::None;
+        self.lookup_modifier = LookupModifier::DEFAULT;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for LookupInvoiceMsg {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for LookupInvoiceMsg {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(Clone,PartialEq,Eq,Debug,Hash)]
+#[cfg_attr(feature = "with-serde", derive(::serde::Serialize, ::serde::Deserialize))]
+pub enum LookupModifier {
+    DEFAULT = 0,
+    HTLC_SET_ONLY = 1,
+    HTLC_SET_BLANK = 2,
+}
+
+impl ::protobuf::ProtobufEnum for LookupModifier {
+    fn value(&self) -> i32 {
+        *self as i32
+    }
+
+    fn from_i32(value: i32) -> ::std::option::Option<LookupModifier> {
+        match value {
+            0 => ::std::option::Option::Some(LookupModifier::DEFAULT),
+            1 => ::std::option::Option::Some(LookupModifier::HTLC_SET_ONLY),
+            2 => ::std::option::Option::Some(LookupModifier::HTLC_SET_BLANK),
+            _ => ::std::option::Option::None
+        }
+    }
+
+    fn values() -> &'static [Self] {
+        static values: &'static [LookupModifier] = &[
+            LookupModifier::DEFAULT,
+            LookupModifier::HTLC_SET_ONLY,
+            LookupModifier::HTLC_SET_BLANK,
+        ];
+        values
+    }
+
+    fn enum_descriptor_static() -> &'static ::protobuf::reflect::EnumDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::EnumDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            ::protobuf::reflect::EnumDescriptor::new_pb_name::<LookupModifier>("LookupModifier", file_descriptor_proto())
+        })
+    }
+}
+
+impl ::std::marker::Copy for LookupModifier {
+}
+
+impl ::std::default::Default for LookupModifier {
+    fn default() -> Self {
+        LookupModifier::DEFAULT
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for LookupModifier {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Enum(::protobuf::ProtobufEnum::descriptor(self))
+    }
+}
+
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\x0einvoices.proto\x12\x0binvoicesrpc\x1a\trpc.proto\"5\n\x10CancelInv\
-    oiceMsg\x12!\n\x0cpayment_hash\x18\x01\x20\x01(\x0cR\x0bpaymentHash\"\
-    \x13\n\x11CancelInvoiceResp\"\xca\x02\n\x15AddHoldInvoiceRequest\x12\x12\
-    \n\x04memo\x18\x01\x20\x01(\tR\x04memo\x12\x12\n\x04hash\x18\x02\x20\x01\
-    (\x0cR\x04hash\x12\x14\n\x05value\x18\x03\x20\x01(\x03R\x05value\x12\x1d\
-    \n\nvalue_msat\x18\n\x20\x01(\x03R\tvalueMsat\x12)\n\x10description_hash\
-    \x18\x04\x20\x01(\x0cR\x0fdescriptionHash\x12\x16\n\x06expiry\x18\x05\
-    \x20\x01(\x03R\x06expiry\x12#\n\rfallback_addr\x18\x06\x20\x01(\tR\x0cfa\
-    llbackAddr\x12\x1f\n\x0bcltv_expiry\x18\x07\x20\x01(\x04R\ncltvExpiry\
-    \x121\n\x0broute_hints\x18\x08\x20\x03(\x0b2\x10.lnrpc.RouteHintR\nroute\
-    Hints\x12\x18\n\x07private\x18\t\x20\x01(\x08R\x07private\"=\n\x12AddHol\
-    dInvoiceResp\x12'\n\x0fpayment_request\x18\x01\x20\x01(\tR\x0epaymentReq\
-    uest\".\n\x10SettleInvoiceMsg\x12\x1a\n\x08preimage\x18\x01\x20\x01(\x0c\
-    R\x08preimage\"\x13\n\x11SettleInvoiceResp\"<\n\x1dSubscribeSingleInvoic\
-    eRequest\x12\x15\n\x06r_hash\x18\x02\x20\x01(\x0cR\x05rHashJ\x04\x08\x01\
-    \x10\x022\xd9\x02\n\x08Invoices\x12V\n\x16SubscribeSingleInvoice\x12*.in\
-    voicesrpc.SubscribeSingleInvoiceRequest\x1a\x0e.lnrpc.Invoice0\x01\x12N\
-    \n\rCancelInvoice\x12\x1d.invoicesrpc.CancelInvoiceMsg\x1a\x1e.invoicesr\
-    pc.CancelInvoiceResp\x12U\n\x0eAddHoldInvoice\x12\".invoicesrpc.AddHoldI\
-    nvoiceRequest\x1a\x1f.invoicesrpc.AddHoldInvoiceResp\x12N\n\rSettleInvoi\
-    ce\x12\x1d.invoicesrpc.SettleInvoiceMsg\x1a\x1e.invoicesrpc.SettleInvoic\
-    eRespB3Z1github.com/lightningnetwork/lnd/lnrpc/invoicesrpcb\x06proto3\
+    \n\x0einvoices.proto\x12\x0binvoicesrpc\x1a\x0flightning.proto\"5\n\x10C\
+    ancelInvoiceMsg\x12!\n\x0cpayment_hash\x18\x01\x20\x01(\x0cR\x0bpaymentH\
+    ash\"\x13\n\x11CancelInvoiceResp\"\xca\x02\n\x15AddHoldInvoiceRequest\
+    \x12\x12\n\x04memo\x18\x01\x20\x01(\tR\x04memo\x12\x12\n\x04hash\x18\x02\
+    \x20\x01(\x0cR\x04hash\x12\x14\n\x05value\x18\x03\x20\x01(\x03R\x05value\
+    \x12\x1d\n\nvalue_msat\x18\n\x20\x01(\x03R\tvalueMsat\x12)\n\x10descript\
+    ion_hash\x18\x04\x20\x01(\x0cR\x0fdescriptionHash\x12\x16\n\x06expiry\
+    \x18\x05\x20\x01(\x03R\x06expiry\x12#\n\rfallback_addr\x18\x06\x20\x01(\
+    \tR\x0cfallbackAddr\x12\x1f\n\x0bcltv_expiry\x18\x07\x20\x01(\x04R\ncltv\
+    Expiry\x121\n\x0broute_hints\x18\x08\x20\x03(\x0b2\x10.lnrpc.RouteHintR\
+    \nrouteHints\x12\x18\n\x07private\x18\t\x20\x01(\x08R\x07private\"}\n\
+    \x12AddHoldInvoiceResp\x12'\n\x0fpayment_request\x18\x01\x20\x01(\tR\x0e\
+    paymentRequest\x12\x1b\n\tadd_index\x18\x02\x20\x01(\x04R\x08addIndex\
+    \x12!\n\x0cpayment_addr\x18\x03\x20\x01(\x0cR\x0bpaymentAddr\".\n\x10Set\
+    tleInvoiceMsg\x12\x1a\n\x08preimage\x18\x01\x20\x01(\x0cR\x08preimage\"\
+    \x13\n\x11SettleInvoiceResp\"<\n\x1dSubscribeSingleInvoiceRequest\x12\
+    \x15\n\x06r_hash\x18\x02\x20\x01(\x0cR\x05rHashJ\x04\x08\x01\x10\x02\"\
+    \xca\x01\n\x10LookupInvoiceMsg\x12#\n\x0cpayment_hash\x18\x01\x20\x01(\
+    \x0cH\0R\x0bpaymentHash\x12#\n\x0cpayment_addr\x18\x02\x20\x01(\x0cH\0R\
+    \x0bpaymentAddr\x12\x17\n\x06set_id\x18\x03\x20\x01(\x0cH\0R\x05setId\
+    \x12D\n\x0flookup_modifier\x18\x04\x20\x01(\x0e2\x1b.invoicesrpc.LookupM\
+    odifierR\x0elookupModifierB\r\n\x0binvoice_ref*D\n\x0eLookupModifier\x12\
+    \x0b\n\x07DEFAULT\x10\0\x12\x11\n\rHTLC_SET_ONLY\x10\x01\x12\x12\n\x0eHT\
+    LC_SET_BLANK\x10\x022\x9b\x03\n\x08Invoices\x12V\n\x16SubscribeSingleInv\
+    oice\x12*.invoicesrpc.SubscribeSingleInvoiceRequest\x1a\x0e.lnrpc.Invoic\
+    e0\x01\x12N\n\rCancelInvoice\x12\x1d.invoicesrpc.CancelInvoiceMsg\x1a\
+    \x1e.invoicesrpc.CancelInvoiceResp\x12U\n\x0eAddHoldInvoice\x12\".invoic\
+    esrpc.AddHoldInvoiceRequest\x1a\x1f.invoicesrpc.AddHoldInvoiceResp\x12N\
+    \n\rSettleInvoice\x12\x1d.invoicesrpc.SettleInvoiceMsg\x1a\x1e.invoicesr\
+    pc.SettleInvoiceResp\x12@\n\x0fLookupInvoiceV2\x12\x1d.invoicesrpc.Looku\
+    pInvoiceMsg\x1a\x0e.lnrpc.InvoiceB3Z1github.com/lightningnetwork/lnd/lnr\
+    pc/invoicesrpcb\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

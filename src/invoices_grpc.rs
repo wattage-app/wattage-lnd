@@ -16,7 +16,7 @@
 #![allow(unused_imports)]
 #![allow(unused_results)]
 
-const METHOD_INVOICES_SUBSCRIBE_SINGLE_INVOICE: ::grpcio::Method<super::invoices::SubscribeSingleInvoiceRequest, super::rpc::Invoice> = ::grpcio::Method {
+const METHOD_INVOICES_SUBSCRIBE_SINGLE_INVOICE: ::grpcio::Method<super::invoices::SubscribeSingleInvoiceRequest, super::lightning::Invoice> = ::grpcio::Method {
     ty: ::grpcio::MethodType::ServerStreaming,
     name: "/invoicesrpc.Invoices/SubscribeSingleInvoice",
     req_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
@@ -44,6 +44,13 @@ const METHOD_INVOICES_SETTLE_INVOICE: ::grpcio::Method<super::invoices::SettleIn
     resp_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
 };
 
+const METHOD_INVOICES_LOOKUP_INVOICE_V2: ::grpcio::Method<super::invoices::LookupInvoiceMsg, super::lightning::Invoice> = ::grpcio::Method {
+    ty: ::grpcio::MethodType::Unary,
+    name: "/invoicesrpc.Invoices/LookupInvoiceV2",
+    req_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
+    resp_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
+};
+
 #[derive(Clone)]
 pub struct InvoicesClient {
     client: ::grpcio::Client,
@@ -56,11 +63,11 @@ impl InvoicesClient {
         }
     }
 
-    pub fn subscribe_single_invoice_opt(&self, req: &super::invoices::SubscribeSingleInvoiceRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::rpc::Invoice>> {
+    pub fn subscribe_single_invoice_opt(&self, req: &super::invoices::SubscribeSingleInvoiceRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::lightning::Invoice>> {
         self.client.server_streaming(&METHOD_INVOICES_SUBSCRIBE_SINGLE_INVOICE, req, opt)
     }
 
-    pub fn subscribe_single_invoice(&self, req: &super::invoices::SubscribeSingleInvoiceRequest) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::rpc::Invoice>> {
+    pub fn subscribe_single_invoice(&self, req: &super::invoices::SubscribeSingleInvoiceRequest) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::lightning::Invoice>> {
         self.subscribe_single_invoice_opt(req, ::grpcio::CallOption::default())
     }
 
@@ -111,16 +118,33 @@ impl InvoicesClient {
     pub fn settle_invoice_async(&self, req: &super::invoices::SettleInvoiceMsg) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::invoices::SettleInvoiceResp>> {
         self.settle_invoice_async_opt(req, ::grpcio::CallOption::default())
     }
+
+    pub fn lookup_invoice_v2_opt(&self, req: &super::invoices::LookupInvoiceMsg, opt: ::grpcio::CallOption) -> ::grpcio::Result<super::lightning::Invoice> {
+        self.client.unary_call(&METHOD_INVOICES_LOOKUP_INVOICE_V2, req, opt)
+    }
+
+    pub fn lookup_invoice_v2(&self, req: &super::invoices::LookupInvoiceMsg) -> ::grpcio::Result<super::lightning::Invoice> {
+        self.lookup_invoice_v2_opt(req, ::grpcio::CallOption::default())
+    }
+
+    pub fn lookup_invoice_v2_async_opt(&self, req: &super::invoices::LookupInvoiceMsg, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::lightning::Invoice>> {
+        self.client.unary_call_async(&METHOD_INVOICES_LOOKUP_INVOICE_V2, req, opt)
+    }
+
+    pub fn lookup_invoice_v2_async(&self, req: &super::invoices::LookupInvoiceMsg) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::lightning::Invoice>> {
+        self.lookup_invoice_v2_async_opt(req, ::grpcio::CallOption::default())
+    }
     pub fn spawn<F>(&self, f: F) where F: ::futures::Future<Output = ()> + Send + 'static {
         self.client.spawn(f)
     }
 }
 
 pub trait Invoices {
-    fn subscribe_single_invoice(&mut self, ctx: ::grpcio::RpcContext, req: super::invoices::SubscribeSingleInvoiceRequest, sink: ::grpcio::ServerStreamingSink<super::rpc::Invoice>);
+    fn subscribe_single_invoice(&mut self, ctx: ::grpcio::RpcContext, req: super::invoices::SubscribeSingleInvoiceRequest, sink: ::grpcio::ServerStreamingSink<super::lightning::Invoice>);
     fn cancel_invoice(&mut self, ctx: ::grpcio::RpcContext, req: super::invoices::CancelInvoiceMsg, sink: ::grpcio::UnarySink<super::invoices::CancelInvoiceResp>);
     fn add_hold_invoice(&mut self, ctx: ::grpcio::RpcContext, req: super::invoices::AddHoldInvoiceRequest, sink: ::grpcio::UnarySink<super::invoices::AddHoldInvoiceResp>);
     fn settle_invoice(&mut self, ctx: ::grpcio::RpcContext, req: super::invoices::SettleInvoiceMsg, sink: ::grpcio::UnarySink<super::invoices::SettleInvoiceResp>);
+    fn lookup_invoice_v2(&mut self, ctx: ::grpcio::RpcContext, req: super::invoices::LookupInvoiceMsg, sink: ::grpcio::UnarySink<super::lightning::Invoice>);
 }
 
 pub fn create_invoices<S: Invoices + Send + Clone + 'static>(s: S) -> ::grpcio::Service {
@@ -137,9 +161,13 @@ pub fn create_invoices<S: Invoices + Send + Clone + 'static>(s: S) -> ::grpcio::
     builder = builder.add_unary_handler(&METHOD_INVOICES_ADD_HOLD_INVOICE, move |ctx, req, resp| {
         instance.add_hold_invoice(ctx, req, resp)
     });
-    let mut instance = s;
+    let mut instance = s.clone();
     builder = builder.add_unary_handler(&METHOD_INVOICES_SETTLE_INVOICE, move |ctx, req, resp| {
         instance.settle_invoice(ctx, req, resp)
+    });
+    let mut instance = s;
+    builder = builder.add_unary_handler(&METHOD_INVOICES_LOOKUP_INVOICE_V2, move |ctx, req, resp| {
+        instance.lookup_invoice_v2(ctx, req, resp)
     });
     builder.build()
 }

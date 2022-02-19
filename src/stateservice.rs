@@ -570,6 +570,7 @@ pub enum WalletState {
     LOCKED = 1,
     UNLOCKED = 2,
     RPC_ACTIVE = 3,
+    SERVER_ACTIVE = 4,
     WAITING_TO_START = 255,
 }
 
@@ -584,6 +585,7 @@ impl ::protobuf::ProtobufEnum for WalletState {
             1 => ::std::option::Option::Some(WalletState::LOCKED),
             2 => ::std::option::Option::Some(WalletState::UNLOCKED),
             3 => ::std::option::Option::Some(WalletState::RPC_ACTIVE),
+            4 => ::std::option::Option::Some(WalletState::SERVER_ACTIVE),
             255 => ::std::option::Option::Some(WalletState::WAITING_TO_START),
             _ => ::std::option::Option::None
         }
@@ -595,6 +597,7 @@ impl ::protobuf::ProtobufEnum for WalletState {
             WalletState::LOCKED,
             WalletState::UNLOCKED,
             WalletState::RPC_ACTIVE,
+            WalletState::SERVER_ACTIVE,
             WalletState::WAITING_TO_START,
         ];
         values
@@ -628,13 +631,13 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     B\n\x16SubscribeStateResponse\x12(\n\x05state\x18\x01\x20\x01(\x0e2\x12.\
     lnrpc.WalletStateR\x05state\"\x11\n\x0fGetStateRequest\"<\n\x10GetStateR\
     esponse\x12(\n\x05state\x18\x01\x20\x01(\x0e2\x12.lnrpc.WalletStateR\x05\
-    state*`\n\x0bWalletState\x12\x10\n\x0cNON_EXISTING\x10\0\x12\n\n\x06LOCK\
+    state*s\n\x0bWalletState\x12\x10\n\x0cNON_EXISTING\x10\0\x12\n\n\x06LOCK\
     ED\x10\x01\x12\x0c\n\x08UNLOCKED\x10\x02\x12\x0e\n\nRPC_ACTIVE\x10\x03\
-    \x12\x15\n\x10WAITING_TO_START\x10\xff\x012\x95\x01\n\x05State\x12O\n\
-    \x0eSubscribeState\x12\x1c.lnrpc.SubscribeStateRequest\x1a\x1d.lnrpc.Sub\
-    scribeStateResponse0\x01\x12;\n\x08GetState\x12\x16.lnrpc.GetStateReques\
-    t\x1a\x17.lnrpc.GetStateResponseB'Z%github.com/lightningnetwork/lnd/lnrp\
-    cb\x06proto3\
+    \x12\x11\n\rSERVER_ACTIVE\x10\x04\x12\x15\n\x10WAITING_TO_START\x10\xff\
+    \x012\x95\x01\n\x05State\x12O\n\x0eSubscribeState\x12\x1c.lnrpc.Subscrib\
+    eStateRequest\x1a\x1d.lnrpc.SubscribeStateResponse0\x01\x12;\n\x08GetSta\
+    te\x12\x16.lnrpc.GetStateRequest\x1a\x17.lnrpc.GetStateResponseB'Z%githu\
+    b.com/lightningnetwork/lnd/lnrpcb\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

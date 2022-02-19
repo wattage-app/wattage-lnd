@@ -41,10 +41,10 @@ pub struct SendPaymentRequest {
     pub outgoing_chan_ids: ::std::vec::Vec<u64>,
     pub last_hop_pubkey: ::std::vec::Vec<u8>,
     pub cltv_limit: i32,
-    pub route_hints: ::protobuf::RepeatedField<super::rpc::RouteHint>,
+    pub route_hints: ::protobuf::RepeatedField<super::lightning::RouteHint>,
     pub dest_custom_records: ::std::collections::HashMap<u64, ::std::vec::Vec<u8>>,
     pub allow_self_payment: bool,
-    pub dest_features: ::std::vec::Vec<super::rpc::FeatureBit>,
+    pub dest_features: ::std::vec::Vec<super::lightning::FeatureBit>,
     pub max_parts: u32,
     pub no_inflight_updates: bool,
     pub max_shard_size_msat: u64,
@@ -345,7 +345,7 @@ impl SendPaymentRequest {
     // repeated .lnrpc.RouteHint route_hints = 10;
 
 
-    pub fn get_route_hints(&self) -> &[super::rpc::RouteHint] {
+    pub fn get_route_hints(&self) -> &[super::lightning::RouteHint] {
         &self.route_hints
     }
     pub fn clear_route_hints(&mut self) {
@@ -353,17 +353,17 @@ impl SendPaymentRequest {
     }
 
     // Param is passed by value, moved
-    pub fn set_route_hints(&mut self, v: ::protobuf::RepeatedField<super::rpc::RouteHint>) {
+    pub fn set_route_hints(&mut self, v: ::protobuf::RepeatedField<super::lightning::RouteHint>) {
         self.route_hints = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_route_hints(&mut self) -> &mut ::protobuf::RepeatedField<super::rpc::RouteHint> {
+    pub fn mut_route_hints(&mut self) -> &mut ::protobuf::RepeatedField<super::lightning::RouteHint> {
         &mut self.route_hints
     }
 
     // Take field
-    pub fn take_route_hints(&mut self) -> ::protobuf::RepeatedField<super::rpc::RouteHint> {
+    pub fn take_route_hints(&mut self) -> ::protobuf::RepeatedField<super::lightning::RouteHint> {
         ::std::mem::replace(&mut self.route_hints, ::protobuf::RepeatedField::new())
     }
 
@@ -410,7 +410,7 @@ impl SendPaymentRequest {
     // repeated .lnrpc.FeatureBit dest_features = 16;
 
 
-    pub fn get_dest_features(&self) -> &[super::rpc::FeatureBit] {
+    pub fn get_dest_features(&self) -> &[super::lightning::FeatureBit] {
         &self.dest_features
     }
     pub fn clear_dest_features(&mut self) {
@@ -418,17 +418,17 @@ impl SendPaymentRequest {
     }
 
     // Param is passed by value, moved
-    pub fn set_dest_features(&mut self, v: ::std::vec::Vec<super::rpc::FeatureBit>) {
+    pub fn set_dest_features(&mut self, v: ::std::vec::Vec<super::lightning::FeatureBit>) {
         self.dest_features = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_dest_features(&mut self) -> &mut ::std::vec::Vec<super::rpc::FeatureBit> {
+    pub fn mut_dest_features(&mut self) -> &mut ::std::vec::Vec<super::lightning::FeatureBit> {
         &mut self.dest_features
     }
 
     // Take field
-    pub fn take_dest_features(&mut self) -> ::std::vec::Vec<super::rpc::FeatureBit> {
+    pub fn take_dest_features(&mut self) -> ::std::vec::Vec<super::lightning::FeatureBit> {
         ::std::mem::replace(&mut self.dest_features, ::std::vec::Vec::new())
     }
 
@@ -882,7 +882,7 @@ impl ::protobuf::Message for SendPaymentRequest {
                 |m: &SendPaymentRequest| { &m.cltv_limit },
                 |m: &mut SendPaymentRequest| { &mut m.cltv_limit },
             ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::rpc::RouteHint>>(
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::lightning::RouteHint>>(
                 "route_hints",
                 |m: &SendPaymentRequest| { &m.route_hints },
                 |m: &mut SendPaymentRequest| { &mut m.route_hints },
@@ -897,7 +897,7 @@ impl ::protobuf::Message for SendPaymentRequest {
                 |m: &SendPaymentRequest| { &m.allow_self_payment },
                 |m: &mut SendPaymentRequest| { &mut m.allow_self_payment },
             ));
-            fields.push(::protobuf::reflect::accessor::make_vec_accessor::<_, ::protobuf::types::ProtobufTypeEnum<super::rpc::FeatureBit>>(
+            fields.push(::protobuf::reflect::accessor::make_vec_accessor::<_, ::protobuf::types::ProtobufTypeEnum<super::lightning::FeatureBit>>(
                 "dest_features",
                 |m: &SendPaymentRequest| { &m.dest_features },
                 |m: &mut SendPaymentRequest| { &mut m.dest_features },
@@ -1565,7 +1565,7 @@ impl ::protobuf::reflect::ProtobufValue for RouteFeeResponse {
 pub struct SendToRouteRequest {
     // message fields
     pub payment_hash: ::std::vec::Vec<u8>,
-    pub route: ::protobuf::SingularPtrField<super::rpc::Route>,
+    pub route: ::protobuf::SingularPtrField<super::lightning::Route>,
     // special fields
     #[cfg_attr(feature = "with-serde", serde(skip))]
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -1613,8 +1613,8 @@ impl SendToRouteRequest {
     // .lnrpc.Route route = 2;
 
 
-    pub fn get_route(&self) -> &super::rpc::Route {
-        self.route.as_ref().unwrap_or_else(|| <super::rpc::Route as ::protobuf::Message>::default_instance())
+    pub fn get_route(&self) -> &super::lightning::Route {
+        self.route.as_ref().unwrap_or_else(|| <super::lightning::Route as ::protobuf::Message>::default_instance())
     }
     pub fn clear_route(&mut self) {
         self.route.clear();
@@ -1625,13 +1625,13 @@ impl SendToRouteRequest {
     }
 
     // Param is passed by value, moved
-    pub fn set_route(&mut self, v: super::rpc::Route) {
+    pub fn set_route(&mut self, v: super::lightning::Route) {
         self.route = ::protobuf::SingularPtrField::some(v);
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_route(&mut self) -> &mut super::rpc::Route {
+    pub fn mut_route(&mut self) -> &mut super::lightning::Route {
         if self.route.is_none() {
             self.route.set_default();
         }
@@ -1639,8 +1639,8 @@ impl SendToRouteRequest {
     }
 
     // Take field
-    pub fn take_route(&mut self) -> super::rpc::Route {
-        self.route.take().unwrap_or_else(|| super::rpc::Route::new())
+    pub fn take_route(&mut self) -> super::lightning::Route {
+        self.route.take().unwrap_or_else(|| super::lightning::Route::new())
     }
 }
 
@@ -1740,7 +1740,7 @@ impl ::protobuf::Message for SendToRouteRequest {
                 |m: &SendToRouteRequest| { &m.payment_hash },
                 |m: &mut SendToRouteRequest| { &mut m.payment_hash },
             ));
-            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::rpc::Route>>(
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::lightning::Route>>(
                 "route",
                 |m: &SendToRouteRequest| { &m.route },
                 |m: &mut SendToRouteRequest| { &mut m.route },
@@ -1784,7 +1784,7 @@ impl ::protobuf::reflect::ProtobufValue for SendToRouteRequest {
 pub struct SendToRouteResponse {
     // message fields
     pub preimage: ::std::vec::Vec<u8>,
-    pub failure: ::protobuf::SingularPtrField<super::rpc::Failure>,
+    pub failure: ::protobuf::SingularPtrField<super::lightning::Failure>,
     // special fields
     #[cfg_attr(feature = "with-serde", serde(skip))]
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -1832,8 +1832,8 @@ impl SendToRouteResponse {
     // .lnrpc.Failure failure = 2;
 
 
-    pub fn get_failure(&self) -> &super::rpc::Failure {
-        self.failure.as_ref().unwrap_or_else(|| <super::rpc::Failure as ::protobuf::Message>::default_instance())
+    pub fn get_failure(&self) -> &super::lightning::Failure {
+        self.failure.as_ref().unwrap_or_else(|| <super::lightning::Failure as ::protobuf::Message>::default_instance())
     }
     pub fn clear_failure(&mut self) {
         self.failure.clear();
@@ -1844,13 +1844,13 @@ impl SendToRouteResponse {
     }
 
     // Param is passed by value, moved
-    pub fn set_failure(&mut self, v: super::rpc::Failure) {
+    pub fn set_failure(&mut self, v: super::lightning::Failure) {
         self.failure = ::protobuf::SingularPtrField::some(v);
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_failure(&mut self) -> &mut super::rpc::Failure {
+    pub fn mut_failure(&mut self) -> &mut super::lightning::Failure {
         if self.failure.is_none() {
             self.failure.set_default();
         }
@@ -1858,8 +1858,8 @@ impl SendToRouteResponse {
     }
 
     // Take field
-    pub fn take_failure(&mut self) -> super::rpc::Failure {
-        self.failure.take().unwrap_or_else(|| super::rpc::Failure::new())
+    pub fn take_failure(&mut self) -> super::lightning::Failure {
+        self.failure.take().unwrap_or_else(|| super::lightning::Failure::new())
     }
 }
 
@@ -1959,7 +1959,7 @@ impl ::protobuf::Message for SendToRouteResponse {
                 |m: &SendToRouteResponse| { &m.preimage },
                 |m: &mut SendToRouteResponse| { &mut m.preimage },
             ));
-            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::rpc::Failure>>(
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::lightning::Failure>>(
                 "failure",
                 |m: &SendToRouteResponse| { &m.failure },
                 |m: &mut SendToRouteResponse| { &mut m.failure },
@@ -5053,7 +5053,7 @@ impl ::protobuf::reflect::ProtobufValue for BuildRouteRequest {
 #[cfg_attr(feature = "with-serde", derive(::serde::Serialize, ::serde::Deserialize))]
 pub struct BuildRouteResponse {
     // message fields
-    pub route: ::protobuf::SingularPtrField<super::rpc::Route>,
+    pub route: ::protobuf::SingularPtrField<super::lightning::Route>,
     // special fields
     #[cfg_attr(feature = "with-serde", serde(skip))]
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -5075,8 +5075,8 @@ impl BuildRouteResponse {
     // .lnrpc.Route route = 1;
 
 
-    pub fn get_route(&self) -> &super::rpc::Route {
-        self.route.as_ref().unwrap_or_else(|| <super::rpc::Route as ::protobuf::Message>::default_instance())
+    pub fn get_route(&self) -> &super::lightning::Route {
+        self.route.as_ref().unwrap_or_else(|| <super::lightning::Route as ::protobuf::Message>::default_instance())
     }
     pub fn clear_route(&mut self) {
         self.route.clear();
@@ -5087,13 +5087,13 @@ impl BuildRouteResponse {
     }
 
     // Param is passed by value, moved
-    pub fn set_route(&mut self, v: super::rpc::Route) {
+    pub fn set_route(&mut self, v: super::lightning::Route) {
         self.route = ::protobuf::SingularPtrField::some(v);
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_route(&mut self) -> &mut super::rpc::Route {
+    pub fn mut_route(&mut self) -> &mut super::lightning::Route {
         if self.route.is_none() {
             self.route.set_default();
         }
@@ -5101,8 +5101,8 @@ impl BuildRouteResponse {
     }
 
     // Take field
-    pub fn take_route(&mut self) -> super::rpc::Route {
-        self.route.take().unwrap_or_else(|| super::rpc::Route::new())
+    pub fn take_route(&mut self) -> super::lightning::Route {
+        self.route.take().unwrap_or_else(|| super::lightning::Route::new())
     }
 }
 
@@ -5188,7 +5188,7 @@ impl ::protobuf::Message for BuildRouteResponse {
         static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::rpc::Route>>(
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::lightning::Route>>(
                 "route",
                 |m: &BuildRouteResponse| { &m.route },
                 |m: &mut BuildRouteResponse| { &mut m.route },
@@ -6606,6 +6606,8 @@ impl ::protobuf::reflect::ProtobufValue for ForwardFailEvent {
 #[derive(PartialEq,Clone,Default)]
 #[cfg_attr(feature = "with-serde", derive(::serde::Serialize, ::serde::Deserialize))]
 pub struct SettleEvent {
+    // message fields
+    pub preimage: ::std::vec::Vec<u8>,
     // special fields
     #[cfg_attr(feature = "with-serde", serde(skip))]
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -6623,6 +6625,32 @@ impl SettleEvent {
     pub fn new() -> SettleEvent {
         ::std::default::Default::default()
     }
+
+    // bytes preimage = 1;
+
+
+    pub fn get_preimage(&self) -> &[u8] {
+        &self.preimage
+    }
+    pub fn clear_preimage(&mut self) {
+        self.preimage.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_preimage(&mut self, v: ::std::vec::Vec<u8>) {
+        self.preimage = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_preimage(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.preimage
+    }
+
+    // Take field
+    pub fn take_preimage(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.preimage, ::std::vec::Vec::new())
+    }
 }
 
 impl ::protobuf::Message for SettleEvent {
@@ -6634,6 +6662,9 @@ impl ::protobuf::Message for SettleEvent {
         while !is.eof()? {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.preimage)?;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -6646,12 +6677,18 @@ impl ::protobuf::Message for SettleEvent {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
+        if !self.preimage.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.preimage);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.preimage.is_empty() {
+            os.write_bytes(1, &self.preimage)?;
+        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -6689,7 +6726,12 @@ impl ::protobuf::Message for SettleEvent {
     fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
         static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
-            let fields = ::std::vec::Vec::new();
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "preimage",
+                |m: &SettleEvent| { &m.preimage },
+                |m: &mut SettleEvent| { &mut m.preimage },
+            ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<SettleEvent>(
                 "SettleEvent",
                 fields,
@@ -6706,6 +6748,7 @@ impl ::protobuf::Message for SettleEvent {
 
 impl ::protobuf::Clear for SettleEvent {
     fn clear(&mut self) {
+        self.preimage.clear();
         self.unknown_fields.clear();
     }
 }
@@ -6727,7 +6770,7 @@ impl ::protobuf::reflect::ProtobufValue for SettleEvent {
 pub struct LinkFailEvent {
     // message fields
     pub info: ::protobuf::SingularPtrField<HtlcInfo>,
-    pub wire_failure: super::rpc::Failure_FailureCode,
+    pub wire_failure: super::lightning::Failure_FailureCode,
     pub failure_detail: FailureDetail,
     pub failure_string: ::std::string::String,
     // special fields
@@ -6784,15 +6827,15 @@ impl LinkFailEvent {
     // .lnrpc.Failure.FailureCode wire_failure = 2;
 
 
-    pub fn get_wire_failure(&self) -> super::rpc::Failure_FailureCode {
+    pub fn get_wire_failure(&self) -> super::lightning::Failure_FailureCode {
         self.wire_failure
     }
     pub fn clear_wire_failure(&mut self) {
-        self.wire_failure = super::rpc::Failure_FailureCode::RESERVED;
+        self.wire_failure = super::lightning::Failure_FailureCode::RESERVED;
     }
 
     // Param is passed by value, moved
-    pub fn set_wire_failure(&mut self, v: super::rpc::Failure_FailureCode) {
+    pub fn set_wire_failure(&mut self, v: super::lightning::Failure_FailureCode) {
         self.wire_failure = v;
     }
 
@@ -6880,7 +6923,7 @@ impl ::protobuf::Message for LinkFailEvent {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         }
-        if self.wire_failure != super::rpc::Failure_FailureCode::RESERVED {
+        if self.wire_failure != super::lightning::Failure_FailureCode::RESERVED {
             my_size += ::protobuf::rt::enum_size(2, self.wire_failure);
         }
         if self.failure_detail != FailureDetail::UNKNOWN {
@@ -6900,7 +6943,7 @@ impl ::protobuf::Message for LinkFailEvent {
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
         }
-        if self.wire_failure != super::rpc::Failure_FailureCode::RESERVED {
+        if self.wire_failure != super::lightning::Failure_FailureCode::RESERVED {
             os.write_enum(2, ::protobuf::ProtobufEnum::value(&self.wire_failure))?;
         }
         if self.failure_detail != FailureDetail::UNKNOWN {
@@ -6952,7 +6995,7 @@ impl ::protobuf::Message for LinkFailEvent {
                 |m: &LinkFailEvent| { &m.info },
                 |m: &mut LinkFailEvent| { &mut m.info },
             ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeEnum<super::rpc::Failure_FailureCode>>(
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeEnum<super::lightning::Failure_FailureCode>>(
                 "wire_failure",
                 |m: &LinkFailEvent| { &m.wire_failure },
                 |m: &mut LinkFailEvent| { &mut m.wire_failure },
@@ -6984,7 +7027,7 @@ impl ::protobuf::Message for LinkFailEvent {
 impl ::protobuf::Clear for LinkFailEvent {
     fn clear(&mut self) {
         self.info.clear();
-        self.wire_failure = super::rpc::Failure_FailureCode::RESERVED;
+        self.wire_failure = super::lightning::Failure_FailureCode::RESERVED;
         self.failure_detail = FailureDetail::UNKNOWN;
         self.failure_string.clear();
         self.unknown_fields.clear();
@@ -7009,7 +7052,7 @@ pub struct PaymentStatus {
     // message fields
     pub state: PaymentState,
     pub preimage: ::std::vec::Vec<u8>,
-    pub htlcs: ::protobuf::RepeatedField<super::rpc::HTLCAttempt>,
+    pub htlcs: ::protobuf::RepeatedField<super::lightning::HTLCAttempt>,
     // special fields
     #[cfg_attr(feature = "with-serde", serde(skip))]
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -7072,7 +7115,7 @@ impl PaymentStatus {
     // repeated .lnrpc.HTLCAttempt htlcs = 4;
 
 
-    pub fn get_htlcs(&self) -> &[super::rpc::HTLCAttempt] {
+    pub fn get_htlcs(&self) -> &[super::lightning::HTLCAttempt] {
         &self.htlcs
     }
     pub fn clear_htlcs(&mut self) {
@@ -7080,17 +7123,17 @@ impl PaymentStatus {
     }
 
     // Param is passed by value, moved
-    pub fn set_htlcs(&mut self, v: ::protobuf::RepeatedField<super::rpc::HTLCAttempt>) {
+    pub fn set_htlcs(&mut self, v: ::protobuf::RepeatedField<super::lightning::HTLCAttempt>) {
         self.htlcs = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_htlcs(&mut self) -> &mut ::protobuf::RepeatedField<super::rpc::HTLCAttempt> {
+    pub fn mut_htlcs(&mut self) -> &mut ::protobuf::RepeatedField<super::lightning::HTLCAttempt> {
         &mut self.htlcs
     }
 
     // Take field
-    pub fn take_htlcs(&mut self) -> ::protobuf::RepeatedField<super::rpc::HTLCAttempt> {
+    pub fn take_htlcs(&mut self) -> ::protobuf::RepeatedField<super::lightning::HTLCAttempt> {
         ::std::mem::replace(&mut self.htlcs, ::protobuf::RepeatedField::new())
     }
 }
@@ -7205,7 +7248,7 @@ impl ::protobuf::Message for PaymentStatus {
                 |m: &PaymentStatus| { &m.preimage },
                 |m: &mut PaymentStatus| { &mut m.preimage },
             ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::rpc::HTLCAttempt>>(
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::lightning::HTLCAttempt>>(
                 "htlcs",
                 |m: &PaymentStatus| { &m.htlcs },
                 |m: &mut PaymentStatus| { &mut m.htlcs },
@@ -8162,7 +8205,7 @@ impl ::protobuf::reflect::ProtobufValue for ForwardHtlcInterceptResponse {
 #[cfg_attr(feature = "with-serde", derive(::serde::Serialize, ::serde::Deserialize))]
 pub struct UpdateChanStatusRequest {
     // message fields
-    pub chan_point: ::protobuf::SingularPtrField<super::rpc::ChannelPoint>,
+    pub chan_point: ::protobuf::SingularPtrField<super::lightning::ChannelPoint>,
     pub action: ChanStatusAction,
     // special fields
     #[cfg_attr(feature = "with-serde", serde(skip))]
@@ -8185,8 +8228,8 @@ impl UpdateChanStatusRequest {
     // .lnrpc.ChannelPoint chan_point = 1;
 
 
-    pub fn get_chan_point(&self) -> &super::rpc::ChannelPoint {
-        self.chan_point.as_ref().unwrap_or_else(|| <super::rpc::ChannelPoint as ::protobuf::Message>::default_instance())
+    pub fn get_chan_point(&self) -> &super::lightning::ChannelPoint {
+        self.chan_point.as_ref().unwrap_or_else(|| <super::lightning::ChannelPoint as ::protobuf::Message>::default_instance())
     }
     pub fn clear_chan_point(&mut self) {
         self.chan_point.clear();
@@ -8197,13 +8240,13 @@ impl UpdateChanStatusRequest {
     }
 
     // Param is passed by value, moved
-    pub fn set_chan_point(&mut self, v: super::rpc::ChannelPoint) {
+    pub fn set_chan_point(&mut self, v: super::lightning::ChannelPoint) {
         self.chan_point = ::protobuf::SingularPtrField::some(v);
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_chan_point(&mut self) -> &mut super::rpc::ChannelPoint {
+    pub fn mut_chan_point(&mut self) -> &mut super::lightning::ChannelPoint {
         if self.chan_point.is_none() {
             self.chan_point.set_default();
         }
@@ -8211,8 +8254,8 @@ impl UpdateChanStatusRequest {
     }
 
     // Take field
-    pub fn take_chan_point(&mut self) -> super::rpc::ChannelPoint {
-        self.chan_point.take().unwrap_or_else(|| super::rpc::ChannelPoint::new())
+    pub fn take_chan_point(&mut self) -> super::lightning::ChannelPoint {
+        self.chan_point.take().unwrap_or_else(|| super::lightning::ChannelPoint::new())
     }
 
     // .routerrpc.ChanStatusAction action = 2;
@@ -8322,7 +8365,7 @@ impl ::protobuf::Message for UpdateChanStatusRequest {
         static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::rpc::ChannelPoint>>(
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::lightning::ChannelPoint>>(
                 "chan_point",
                 |m: &UpdateChanStatusRequest| { &m.chan_point },
                 |m: &mut UpdateChanStatusRequest| { &mut m.chan_point },
@@ -8774,98 +8817,99 @@ impl ::protobuf::reflect::ProtobufValue for ChanStatusAction {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\x0crouter.proto\x12\trouterrpc\x1a\trpc.proto\"\xd7\x07\n\x12SendPaym\
-    entRequest\x12\x12\n\x04dest\x18\x01\x20\x01(\x0cR\x04dest\x12\x10\n\x03\
-    amt\x18\x02\x20\x01(\x03R\x03amt\x12\x19\n\x08amt_msat\x18\x0c\x20\x01(\
-    \x03R\x07amtMsat\x12!\n\x0cpayment_hash\x18\x03\x20\x01(\x0cR\x0bpayment\
-    Hash\x12(\n\x10final_cltv_delta\x18\x04\x20\x01(\x05R\x0efinalCltvDelta\
-    \x12!\n\x0cpayment_addr\x18\x14\x20\x01(\x0cR\x0bpaymentAddr\x12'\n\x0fp\
-    ayment_request\x18\x05\x20\x01(\tR\x0epaymentRequest\x12'\n\x0ftimeout_s\
-    econds\x18\x06\x20\x01(\x05R\x0etimeoutSeconds\x12\"\n\rfee_limit_sat\
-    \x18\x07\x20\x01(\x03R\x0bfeeLimitSat\x12$\n\x0efee_limit_msat\x18\r\x20\
-    \x01(\x03R\x0cfeeLimitMsat\x12.\n\x10outgoing_chan_id\x18\x08\x20\x01(\
-    \x04R\x0eoutgoingChanIdB\x040\x01\x18\x01\x12*\n\x11outgoing_chan_ids\
-    \x18\x13\x20\x03(\x04R\x0foutgoingChanIds\x12&\n\x0flast_hop_pubkey\x18\
-    \x0e\x20\x01(\x0cR\rlastHopPubkey\x12\x1d\n\ncltv_limit\x18\t\x20\x01(\
-    \x05R\tcltvLimit\x121\n\x0broute_hints\x18\n\x20\x03(\x0b2\x10.lnrpc.Rou\
-    teHintR\nrouteHints\x12d\n\x13dest_custom_records\x18\x0b\x20\x03(\x0b24\
-    .routerrpc.SendPaymentRequest.DestCustomRecordsEntryR\x11destCustomRecor\
-    ds\x12,\n\x12allow_self_payment\x18\x0f\x20\x01(\x08R\x10allowSelfPaymen\
-    t\x126\n\rdest_features\x18\x10\x20\x03(\x0e2\x11.lnrpc.FeatureBitR\x0cd\
-    estFeatures\x12\x1b\n\tmax_parts\x18\x11\x20\x01(\rR\x08maxParts\x12.\n\
-    \x13no_inflight_updates\x18\x12\x20\x01(\x08R\x11noInflightUpdates\x12-\
-    \n\x13max_shard_size_msat\x18\x15\x20\x01(\x04R\x10maxShardSizeMsat\x12\
-    \x10\n\x03amp\x18\x16\x20\x01(\x08R\x03amp\x1aD\n\x16DestCustomRecordsEn\
-    try\x12\x10\n\x03key\x18\x01\x20\x01(\x04R\x03key\x12\x14\n\x05value\x18\
-    \x02\x20\x01(\x0cR\x05value:\x028\x01\"h\n\x13TrackPaymentRequest\x12!\n\
-    \x0cpayment_hash\x18\x01\x20\x01(\x0cR\x0bpaymentHash\x12.\n\x13no_infli\
-    ght_updates\x18\x02\x20\x01(\x08R\x11noInflightUpdates\">\n\x0fRouteFeeR\
-    equest\x12\x12\n\x04dest\x18\x01\x20\x01(\x0cR\x04dest\x12\x17\n\x07amt_\
-    sat\x18\x02\x20\x01(\x03R\x06amtSat\"d\n\x10RouteFeeResponse\x12(\n\x10r\
-    outing_fee_msat\x18\x01\x20\x01(\x03R\x0eroutingFeeMsat\x12&\n\x0ftime_l\
-    ock_delay\x18\x02\x20\x01(\x03R\rtimeLockDelay\"[\n\x12SendToRouteReques\
-    t\x12!\n\x0cpayment_hash\x18\x01\x20\x01(\x0cR\x0bpaymentHash\x12\"\n\
-    \x05route\x18\x02\x20\x01(\x0b2\x0c.lnrpc.RouteR\x05route\"[\n\x13SendTo\
-    RouteResponse\x12\x1a\n\x08preimage\x18\x01\x20\x01(\x0cR\x08preimage\
-    \x12(\n\x07failure\x18\x02\x20\x01(\x0b2\x0e.lnrpc.FailureR\x07failure\"\
-    \x1c\n\x1aResetMissionControlRequest\"\x1d\n\x1bResetMissionControlRespo\
-    nse\"\x1c\n\x1aQueryMissionControlRequest\"Q\n\x1bQueryMissionControlRes\
-    ponse\x12,\n\x05pairs\x18\x02\x20\x03(\x0b2\x16.routerrpc.PairHistoryR\
-    \x05pairsJ\x04\x08\x01\x10\x02\"L\n\x1cXImportMissionControlRequest\x12,\
-    \n\x05pairs\x18\x01\x20\x03(\x0b2\x16.routerrpc.PairHistoryR\x05pairs\"\
-    \x1f\n\x1dXImportMissionControlResponse\"\x8a\x01\n\x0bPairHistory\x12\
-    \x1b\n\tnode_from\x18\x01\x20\x01(\x0cR\x08nodeFrom\x12\x17\n\x07node_to\
-    \x18\x02\x20\x01(\x0cR\x06nodeTo\x12-\n\x07history\x18\x07\x20\x01(\x0b2\
-    \x13.routerrpc.PairDataR\x07historyJ\x04\x08\x03\x10\x04J\x04\x08\x04\
-    \x10\x05J\x04\x08\x05\x10\x06J\x04\x08\x06\x10\x07\"\xe8\x01\n\x08PairDa\
-    ta\x12\x1b\n\tfail_time\x18\x01\x20\x01(\x03R\x08failTime\x12\x20\n\x0cf\
-    ail_amt_sat\x18\x02\x20\x01(\x03R\nfailAmtSat\x12\"\n\rfail_amt_msat\x18\
-    \x04\x20\x01(\x03R\x0bfailAmtMsat\x12!\n\x0csuccess_time\x18\x05\x20\x01\
-    (\x03R\x0bsuccessTime\x12&\n\x0fsuccess_amt_sat\x18\x06\x20\x01(\x03R\rs\
-    uccessAmtSat\x12(\n\x10success_amt_msat\x18\x07\x20\x01(\x03R\x0esuccess\
-    AmtMsatJ\x04\x08\x03\x10\x04\"\x20\n\x1eGetMissionControlConfigRequest\"\
-    Z\n\x1fGetMissionControlConfigResponse\x127\n\x06config\x18\x01\x20\x01(\
-    \x0b2\x1f.routerrpc.MissionControlConfigR\x06config\"Y\n\x1eSetMissionCo\
-    ntrolConfigRequest\x127\n\x06config\x18\x01\x20\x01(\x0b2\x1f.routerrpc.\
-    MissionControlConfigR\x06config\"!\n\x1fSetMissionControlConfigResponse\
-    \"\x80\x02\n\x14MissionControlConfig\x12*\n\x11half_life_seconds\x18\x01\
-    \x20\x01(\x04R\x0fhalfLifeSeconds\x12'\n\x0fhop_probability\x18\x02\x20\
-    \x01(\x02R\x0ehopProbability\x12\x16\n\x06weight\x18\x03\x20\x01(\x02R\
-    \x06weight\x126\n\x17maximum_payment_results\x18\x04\x20\x01(\rR\x15maxi\
-    mumPaymentResults\x12C\n\x1eminimum_failure_relax_interval\x18\x05\x20\
-    \x01(\x04R\x1bminimumFailureRelaxInterval\"j\n\x17QueryProbabilityReques\
-    t\x12\x1b\n\tfrom_node\x18\x01\x20\x01(\x0cR\x08fromNode\x12\x17\n\x07to\
-    _node\x18\x02\x20\x01(\x0cR\x06toNode\x12\x19\n\x08amt_msat\x18\x03\x20\
-    \x01(\x03R\x07amtMsat\"k\n\x18QueryProbabilityResponse\x12\x20\n\x0bprob\
-    ability\x18\x01\x20\x01(\x01R\x0bprobability\x12-\n\x07history\x18\x02\
-    \x20\x01(\x0b2\x13.routerrpc.PairDataR\x07history\"\xca\x01\n\x11BuildRo\
-    uteRequest\x12\x19\n\x08amt_msat\x18\x01\x20\x01(\x03R\x07amtMsat\x12(\n\
-    \x10final_cltv_delta\x18\x02\x20\x01(\x05R\x0efinalCltvDelta\x12,\n\x10o\
-    utgoing_chan_id\x18\x03\x20\x01(\x04R\x0eoutgoingChanIdB\x020\x01\x12\
-    \x1f\n\x0bhop_pubkeys\x18\x04\x20\x03(\x0cR\nhopPubkeys\x12!\n\x0cpaymen\
-    t_addr\x18\x05\x20\x01(\x0cR\x0bpaymentAddr\"8\n\x12BuildRouteResponse\
-    \x12\"\n\x05route\x18\x01\x20\x01(\x0b2\x0c.lnrpc.RouteR\x05route\"\x1c\
-    \n\x1aSubscribeHtlcEventsRequest\"\xf6\x04\n\tHtlcEvent\x12.\n\x13incomi\
-    ng_channel_id\x18\x01\x20\x01(\x04R\x11incomingChannelId\x12.\n\x13outgo\
-    ing_channel_id\x18\x02\x20\x01(\x04R\x11outgoingChannelId\x12(\n\x10inco\
-    ming_htlc_id\x18\x03\x20\x01(\x04R\x0eincomingHtlcId\x12(\n\x10outgoing_\
-    htlc_id\x18\x04\x20\x01(\x04R\x0eoutgoingHtlcId\x12!\n\x0ctimestamp_ns\
-    \x18\x05\x20\x01(\x04R\x0btimestampNs\x12=\n\nevent_type\x18\x06\x20\x01\
-    (\x0e2\x1e.routerrpc.HtlcEvent.EventTypeR\teventType\x12>\n\rforward_eve\
-    nt\x18\x07\x20\x01(\x0b2\x17.routerrpc.ForwardEventH\0R\x0cforwardEvent\
-    \x12K\n\x12forward_fail_event\x18\x08\x20\x01(\x0b2\x1b.routerrpc.Forwar\
-    dFailEventH\0R\x10forwardFailEvent\x12;\n\x0csettle_event\x18\t\x20\x01(\
-    \x0b2\x16.routerrpc.SettleEventH\0R\x0bsettleEvent\x12B\n\x0flink_fail_e\
-    vent\x18\n\x20\x01(\x0b2\x18.routerrpc.LinkFailEventH\0R\rlinkFailEvent\
-    \"<\n\tEventType\x12\x0b\n\x07UNKNOWN\x10\0\x12\x08\n\x04SEND\x10\x01\
-    \x12\x0b\n\x07RECEIVE\x10\x02\x12\x0b\n\x07FORWARD\x10\x03B\x07\n\x05eve\
-    nt\"\xbc\x01\n\x08HtlcInfo\x12+\n\x11incoming_timelock\x18\x01\x20\x01(\
-    \rR\x10incomingTimelock\x12+\n\x11outgoing_timelock\x18\x02\x20\x01(\rR\
-    \x10outgoingTimelock\x12*\n\x11incoming_amt_msat\x18\x03\x20\x01(\x04R\
-    \x0fincomingAmtMsat\x12*\n\x11outgoing_amt_msat\x18\x04\x20\x01(\x04R\
-    \x0foutgoingAmtMsat\"7\n\x0cForwardEvent\x12'\n\x04info\x18\x01\x20\x01(\
-    \x0b2\x13.routerrpc.HtlcInfoR\x04info\"\x12\n\x10ForwardFailEvent\"\r\n\
-    \x0bSettleEvent\"\xdf\x01\n\rLinkFailEvent\x12'\n\x04info\x18\x01\x20\
+    \n\x0crouter.proto\x12\trouterrpc\x1a\x0flightning.proto\"\xd7\x07\n\x12\
+    SendPaymentRequest\x12\x12\n\x04dest\x18\x01\x20\x01(\x0cR\x04dest\x12\
+    \x10\n\x03amt\x18\x02\x20\x01(\x03R\x03amt\x12\x19\n\x08amt_msat\x18\x0c\
+    \x20\x01(\x03R\x07amtMsat\x12!\n\x0cpayment_hash\x18\x03\x20\x01(\x0cR\
+    \x0bpaymentHash\x12(\n\x10final_cltv_delta\x18\x04\x20\x01(\x05R\x0efina\
+    lCltvDelta\x12!\n\x0cpayment_addr\x18\x14\x20\x01(\x0cR\x0bpaymentAddr\
+    \x12'\n\x0fpayment_request\x18\x05\x20\x01(\tR\x0epaymentRequest\x12'\n\
+    \x0ftimeout_seconds\x18\x06\x20\x01(\x05R\x0etimeoutSeconds\x12\"\n\rfee\
+    _limit_sat\x18\x07\x20\x01(\x03R\x0bfeeLimitSat\x12$\n\x0efee_limit_msat\
+    \x18\r\x20\x01(\x03R\x0cfeeLimitMsat\x12.\n\x10outgoing_chan_id\x18\x08\
+    \x20\x01(\x04R\x0eoutgoingChanIdB\x040\x01\x18\x01\x12*\n\x11outgoing_ch\
+    an_ids\x18\x13\x20\x03(\x04R\x0foutgoingChanIds\x12&\n\x0flast_hop_pubke\
+    y\x18\x0e\x20\x01(\x0cR\rlastHopPubkey\x12\x1d\n\ncltv_limit\x18\t\x20\
+    \x01(\x05R\tcltvLimit\x121\n\x0broute_hints\x18\n\x20\x03(\x0b2\x10.lnrp\
+    c.RouteHintR\nrouteHints\x12d\n\x13dest_custom_records\x18\x0b\x20\x03(\
+    \x0b24.routerrpc.SendPaymentRequest.DestCustomRecordsEntryR\x11destCusto\
+    mRecords\x12,\n\x12allow_self_payment\x18\x0f\x20\x01(\x08R\x10allowSelf\
+    Payment\x126\n\rdest_features\x18\x10\x20\x03(\x0e2\x11.lnrpc.FeatureBit\
+    R\x0cdestFeatures\x12\x1b\n\tmax_parts\x18\x11\x20\x01(\rR\x08maxParts\
+    \x12.\n\x13no_inflight_updates\x18\x12\x20\x01(\x08R\x11noInflightUpdate\
+    s\x12-\n\x13max_shard_size_msat\x18\x15\x20\x01(\x04R\x10maxShardSizeMsa\
+    t\x12\x10\n\x03amp\x18\x16\x20\x01(\x08R\x03amp\x1aD\n\x16DestCustomReco\
+    rdsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\x04R\x03key\x12\x14\n\x05valu\
+    e\x18\x02\x20\x01(\x0cR\x05value:\x028\x01\"h\n\x13TrackPaymentRequest\
+    \x12!\n\x0cpayment_hash\x18\x01\x20\x01(\x0cR\x0bpaymentHash\x12.\n\x13n\
+    o_inflight_updates\x18\x02\x20\x01(\x08R\x11noInflightUpdates\">\n\x0fRo\
+    uteFeeRequest\x12\x12\n\x04dest\x18\x01\x20\x01(\x0cR\x04dest\x12\x17\n\
+    \x07amt_sat\x18\x02\x20\x01(\x03R\x06amtSat\"d\n\x10RouteFeeResponse\x12\
+    (\n\x10routing_fee_msat\x18\x01\x20\x01(\x03R\x0eroutingFeeMsat\x12&\n\
+    \x0ftime_lock_delay\x18\x02\x20\x01(\x03R\rtimeLockDelay\"[\n\x12SendToR\
+    outeRequest\x12!\n\x0cpayment_hash\x18\x01\x20\x01(\x0cR\x0bpaymentHash\
+    \x12\"\n\x05route\x18\x02\x20\x01(\x0b2\x0c.lnrpc.RouteR\x05route\"[\n\
+    \x13SendToRouteResponse\x12\x1a\n\x08preimage\x18\x01\x20\x01(\x0cR\x08p\
+    reimage\x12(\n\x07failure\x18\x02\x20\x01(\x0b2\x0e.lnrpc.FailureR\x07fa\
+    ilure\"\x1c\n\x1aResetMissionControlRequest\"\x1d\n\x1bResetMissionContr\
+    olResponse\"\x1c\n\x1aQueryMissionControlRequest\"Q\n\x1bQueryMissionCon\
+    trolResponse\x12,\n\x05pairs\x18\x02\x20\x03(\x0b2\x16.routerrpc.PairHis\
+    toryR\x05pairsJ\x04\x08\x01\x10\x02\"L\n\x1cXImportMissionControlRequest\
+    \x12,\n\x05pairs\x18\x01\x20\x03(\x0b2\x16.routerrpc.PairHistoryR\x05pai\
+    rs\"\x1f\n\x1dXImportMissionControlResponse\"\x8a\x01\n\x0bPairHistory\
+    \x12\x1b\n\tnode_from\x18\x01\x20\x01(\x0cR\x08nodeFrom\x12\x17\n\x07nod\
+    e_to\x18\x02\x20\x01(\x0cR\x06nodeTo\x12-\n\x07history\x18\x07\x20\x01(\
+    \x0b2\x13.routerrpc.PairDataR\x07historyJ\x04\x08\x03\x10\x04J\x04\x08\
+    \x04\x10\x05J\x04\x08\x05\x10\x06J\x04\x08\x06\x10\x07\"\xe8\x01\n\x08Pa\
+    irData\x12\x1b\n\tfail_time\x18\x01\x20\x01(\x03R\x08failTime\x12\x20\n\
+    \x0cfail_amt_sat\x18\x02\x20\x01(\x03R\nfailAmtSat\x12\"\n\rfail_amt_msa\
+    t\x18\x04\x20\x01(\x03R\x0bfailAmtMsat\x12!\n\x0csuccess_time\x18\x05\
+    \x20\x01(\x03R\x0bsuccessTime\x12&\n\x0fsuccess_amt_sat\x18\x06\x20\x01(\
+    \x03R\rsuccessAmtSat\x12(\n\x10success_amt_msat\x18\x07\x20\x01(\x03R\
+    \x0esuccessAmtMsatJ\x04\x08\x03\x10\x04\"\x20\n\x1eGetMissionControlConf\
+    igRequest\"Z\n\x1fGetMissionControlConfigResponse\x127\n\x06config\x18\
+    \x01\x20\x01(\x0b2\x1f.routerrpc.MissionControlConfigR\x06config\"Y\n\
+    \x1eSetMissionControlConfigRequest\x127\n\x06config\x18\x01\x20\x01(\x0b\
+    2\x1f.routerrpc.MissionControlConfigR\x06config\"!\n\x1fSetMissionContro\
+    lConfigResponse\"\x80\x02\n\x14MissionControlConfig\x12*\n\x11half_life_\
+    seconds\x18\x01\x20\x01(\x04R\x0fhalfLifeSeconds\x12'\n\x0fhop_probabili\
+    ty\x18\x02\x20\x01(\x02R\x0ehopProbability\x12\x16\n\x06weight\x18\x03\
+    \x20\x01(\x02R\x06weight\x126\n\x17maximum_payment_results\x18\x04\x20\
+    \x01(\rR\x15maximumPaymentResults\x12C\n\x1eminimum_failure_relax_interv\
+    al\x18\x05\x20\x01(\x04R\x1bminimumFailureRelaxInterval\"j\n\x17QueryPro\
+    babilityRequest\x12\x1b\n\tfrom_node\x18\x01\x20\x01(\x0cR\x08fromNode\
+    \x12\x17\n\x07to_node\x18\x02\x20\x01(\x0cR\x06toNode\x12\x19\n\x08amt_m\
+    sat\x18\x03\x20\x01(\x03R\x07amtMsat\"k\n\x18QueryProbabilityResponse\
+    \x12\x20\n\x0bprobability\x18\x01\x20\x01(\x01R\x0bprobability\x12-\n\
+    \x07history\x18\x02\x20\x01(\x0b2\x13.routerrpc.PairDataR\x07history\"\
+    \xca\x01\n\x11BuildRouteRequest\x12\x19\n\x08amt_msat\x18\x01\x20\x01(\
+    \x03R\x07amtMsat\x12(\n\x10final_cltv_delta\x18\x02\x20\x01(\x05R\x0efin\
+    alCltvDelta\x12,\n\x10outgoing_chan_id\x18\x03\x20\x01(\x04R\x0eoutgoing\
+    ChanIdB\x020\x01\x12\x1f\n\x0bhop_pubkeys\x18\x04\x20\x03(\x0cR\nhopPubk\
+    eys\x12!\n\x0cpayment_addr\x18\x05\x20\x01(\x0cR\x0bpaymentAddr\"8\n\x12\
+    BuildRouteResponse\x12\"\n\x05route\x18\x01\x20\x01(\x0b2\x0c.lnrpc.Rout\
+    eR\x05route\"\x1c\n\x1aSubscribeHtlcEventsRequest\"\xf6\x04\n\tHtlcEvent\
+    \x12.\n\x13incoming_channel_id\x18\x01\x20\x01(\x04R\x11incomingChannelI\
+    d\x12.\n\x13outgoing_channel_id\x18\x02\x20\x01(\x04R\x11outgoingChannel\
+    Id\x12(\n\x10incoming_htlc_id\x18\x03\x20\x01(\x04R\x0eincomingHtlcId\
+    \x12(\n\x10outgoing_htlc_id\x18\x04\x20\x01(\x04R\x0eoutgoingHtlcId\x12!\
+    \n\x0ctimestamp_ns\x18\x05\x20\x01(\x04R\x0btimestampNs\x12=\n\nevent_ty\
+    pe\x18\x06\x20\x01(\x0e2\x1e.routerrpc.HtlcEvent.EventTypeR\teventType\
+    \x12>\n\rforward_event\x18\x07\x20\x01(\x0b2\x17.routerrpc.ForwardEventH\
+    \0R\x0cforwardEvent\x12K\n\x12forward_fail_event\x18\x08\x20\x01(\x0b2\
+    \x1b.routerrpc.ForwardFailEventH\0R\x10forwardFailEvent\x12;\n\x0csettle\
+    _event\x18\t\x20\x01(\x0b2\x16.routerrpc.SettleEventH\0R\x0bsettleEvent\
+    \x12B\n\x0flink_fail_event\x18\n\x20\x01(\x0b2\x18.routerrpc.LinkFailEve\
+    ntH\0R\rlinkFailEvent\"<\n\tEventType\x12\x0b\n\x07UNKNOWN\x10\0\x12\x08\
+    \n\x04SEND\x10\x01\x12\x0b\n\x07RECEIVE\x10\x02\x12\x0b\n\x07FORWARD\x10\
+    \x03B\x07\n\x05event\"\xbc\x01\n\x08HtlcInfo\x12+\n\x11incoming_timelock\
+    \x18\x01\x20\x01(\rR\x10incomingTimelock\x12+\n\x11outgoing_timelock\x18\
+    \x02\x20\x01(\rR\x10outgoingTimelock\x12*\n\x11incoming_amt_msat\x18\x03\
+    \x20\x01(\x04R\x0fincomingAmtMsat\x12*\n\x11outgoing_amt_msat\x18\x04\
+    \x20\x01(\x04R\x0foutgoingAmtMsat\"7\n\x0cForwardEvent\x12'\n\x04info\
+    \x18\x01\x20\x01(\x0b2\x13.routerrpc.HtlcInfoR\x04info\"\x12\n\x10Forwar\
+    dFailEvent\")\n\x0bSettleEvent\x12\x1a\n\x08preimage\x18\x01\x20\x01(\
+    \x0cR\x08preimage\"\xdf\x01\n\rLinkFailEvent\x12'\n\x04info\x18\x01\x20\
     \x01(\x0b2\x13.routerrpc.HtlcInfoR\x04info\x12=\n\x0cwire_failure\x18\
     \x02\x20\x01(\x0e2\x1a.lnrpc.Failure.FailureCodeR\x0bwireFailure\x12?\n\
     \x0efailure_detail\x18\x03\x20\x01(\x0e2\x18.routerrpc.FailureDetailR\rf\

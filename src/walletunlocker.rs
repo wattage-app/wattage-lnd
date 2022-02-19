@@ -438,8 +438,11 @@ pub struct InitWalletRequest {
     pub cipher_seed_mnemonic: ::protobuf::RepeatedField<::std::string::String>,
     pub aezeed_passphrase: ::std::vec::Vec<u8>,
     pub recovery_window: i32,
-    pub channel_backups: ::protobuf::SingularPtrField<super::rpc::ChanBackupSnapshot>,
+    pub channel_backups: ::protobuf::SingularPtrField<super::lightning::ChanBackupSnapshot>,
     pub stateless_init: bool,
+    pub extended_master_key: ::std::string::String,
+    pub extended_master_key_birthday_timestamp: u64,
+    pub watch_only: ::protobuf::SingularPtrField<WatchOnly>,
     // special fields
     #[cfg_attr(feature = "with-serde", serde(skip))]
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -553,8 +556,8 @@ impl InitWalletRequest {
     // .lnrpc.ChanBackupSnapshot channel_backups = 5;
 
 
-    pub fn get_channel_backups(&self) -> &super::rpc::ChanBackupSnapshot {
-        self.channel_backups.as_ref().unwrap_or_else(|| <super::rpc::ChanBackupSnapshot as ::protobuf::Message>::default_instance())
+    pub fn get_channel_backups(&self) -> &super::lightning::ChanBackupSnapshot {
+        self.channel_backups.as_ref().unwrap_or_else(|| <super::lightning::ChanBackupSnapshot as ::protobuf::Message>::default_instance())
     }
     pub fn clear_channel_backups(&mut self) {
         self.channel_backups.clear();
@@ -565,13 +568,13 @@ impl InitWalletRequest {
     }
 
     // Param is passed by value, moved
-    pub fn set_channel_backups(&mut self, v: super::rpc::ChanBackupSnapshot) {
+    pub fn set_channel_backups(&mut self, v: super::lightning::ChanBackupSnapshot) {
         self.channel_backups = ::protobuf::SingularPtrField::some(v);
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_channel_backups(&mut self) -> &mut super::rpc::ChanBackupSnapshot {
+    pub fn mut_channel_backups(&mut self) -> &mut super::lightning::ChanBackupSnapshot {
         if self.channel_backups.is_none() {
             self.channel_backups.set_default();
         }
@@ -579,8 +582,8 @@ impl InitWalletRequest {
     }
 
     // Take field
-    pub fn take_channel_backups(&mut self) -> super::rpc::ChanBackupSnapshot {
-        self.channel_backups.take().unwrap_or_else(|| super::rpc::ChanBackupSnapshot::new())
+    pub fn take_channel_backups(&mut self) -> super::lightning::ChanBackupSnapshot {
+        self.channel_backups.take().unwrap_or_else(|| super::lightning::ChanBackupSnapshot::new())
     }
 
     // bool stateless_init = 6;
@@ -597,11 +600,90 @@ impl InitWalletRequest {
     pub fn set_stateless_init(&mut self, v: bool) {
         self.stateless_init = v;
     }
+
+    // string extended_master_key = 7;
+
+
+    pub fn get_extended_master_key(&self) -> &str {
+        &self.extended_master_key
+    }
+    pub fn clear_extended_master_key(&mut self) {
+        self.extended_master_key.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_extended_master_key(&mut self, v: ::std::string::String) {
+        self.extended_master_key = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_extended_master_key(&mut self) -> &mut ::std::string::String {
+        &mut self.extended_master_key
+    }
+
+    // Take field
+    pub fn take_extended_master_key(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.extended_master_key, ::std::string::String::new())
+    }
+
+    // uint64 extended_master_key_birthday_timestamp = 8;
+
+
+    pub fn get_extended_master_key_birthday_timestamp(&self) -> u64 {
+        self.extended_master_key_birthday_timestamp
+    }
+    pub fn clear_extended_master_key_birthday_timestamp(&mut self) {
+        self.extended_master_key_birthday_timestamp = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_extended_master_key_birthday_timestamp(&mut self, v: u64) {
+        self.extended_master_key_birthday_timestamp = v;
+    }
+
+    // .lnrpc.WatchOnly watch_only = 9;
+
+
+    pub fn get_watch_only(&self) -> &WatchOnly {
+        self.watch_only.as_ref().unwrap_or_else(|| <WatchOnly as ::protobuf::Message>::default_instance())
+    }
+    pub fn clear_watch_only(&mut self) {
+        self.watch_only.clear();
+    }
+
+    pub fn has_watch_only(&self) -> bool {
+        self.watch_only.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_watch_only(&mut self, v: WatchOnly) {
+        self.watch_only = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_watch_only(&mut self) -> &mut WatchOnly {
+        if self.watch_only.is_none() {
+            self.watch_only.set_default();
+        }
+        self.watch_only.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_watch_only(&mut self) -> WatchOnly {
+        self.watch_only.take().unwrap_or_else(|| WatchOnly::new())
+    }
 }
 
 impl ::protobuf::Message for InitWalletRequest {
     fn is_initialized(&self) -> bool {
         for v in &self.channel_backups {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.watch_only {
             if !v.is_initialized() {
                 return false;
             }
@@ -639,6 +721,19 @@ impl ::protobuf::Message for InitWalletRequest {
                     let tmp = is.read_bool()?;
                     self.stateless_init = tmp;
                 },
+                7 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.extended_master_key)?;
+                },
+                8 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.extended_master_key_birthday_timestamp = tmp;
+                },
+                9 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.watch_only)?;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -670,6 +765,16 @@ impl ::protobuf::Message for InitWalletRequest {
         if self.stateless_init != false {
             my_size += 2;
         }
+        if !self.extended_master_key.is_empty() {
+            my_size += ::protobuf::rt::string_size(7, &self.extended_master_key);
+        }
+        if self.extended_master_key_birthday_timestamp != 0 {
+            my_size += ::protobuf::rt::value_size(8, self.extended_master_key_birthday_timestamp, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if let Some(ref v) = self.watch_only.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -695,6 +800,17 @@ impl ::protobuf::Message for InitWalletRequest {
         }
         if self.stateless_init != false {
             os.write_bool(6, self.stateless_init)?;
+        }
+        if !self.extended_master_key.is_empty() {
+            os.write_string(7, &self.extended_master_key)?;
+        }
+        if self.extended_master_key_birthday_timestamp != 0 {
+            os.write_uint64(8, self.extended_master_key_birthday_timestamp)?;
+        }
+        if let Some(ref v) = self.watch_only.as_ref() {
+            os.write_tag(9, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -754,7 +870,7 @@ impl ::protobuf::Message for InitWalletRequest {
                 |m: &InitWalletRequest| { &m.recovery_window },
                 |m: &mut InitWalletRequest| { &mut m.recovery_window },
             ));
-            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::rpc::ChanBackupSnapshot>>(
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::lightning::ChanBackupSnapshot>>(
                 "channel_backups",
                 |m: &InitWalletRequest| { &m.channel_backups },
                 |m: &mut InitWalletRequest| { &mut m.channel_backups },
@@ -763,6 +879,21 @@ impl ::protobuf::Message for InitWalletRequest {
                 "stateless_init",
                 |m: &InitWalletRequest| { &m.stateless_init },
                 |m: &mut InitWalletRequest| { &mut m.stateless_init },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "extended_master_key",
+                |m: &InitWalletRequest| { &m.extended_master_key },
+                |m: &mut InitWalletRequest| { &mut m.extended_master_key },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "extended_master_key_birthday_timestamp",
+                |m: &InitWalletRequest| { &m.extended_master_key_birthday_timestamp },
+                |m: &mut InitWalletRequest| { &mut m.extended_master_key_birthday_timestamp },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<WatchOnly>>(
+                "watch_only",
+                |m: &InitWalletRequest| { &m.watch_only },
+                |m: &mut InitWalletRequest| { &mut m.watch_only },
             ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<InitWalletRequest>(
                 "InitWalletRequest",
@@ -786,6 +917,9 @@ impl ::protobuf::Clear for InitWalletRequest {
         self.recovery_window = 0;
         self.channel_backups.clear();
         self.stateless_init = false;
+        self.extended_master_key.clear();
+        self.extended_master_key_birthday_timestamp = 0;
+        self.watch_only.clear();
         self.unknown_fields.clear();
     }
 }
@@ -966,11 +1100,524 @@ impl ::protobuf::reflect::ProtobufValue for InitWalletResponse {
 
 #[derive(PartialEq,Clone,Default)]
 #[cfg_attr(feature = "with-serde", derive(::serde::Serialize, ::serde::Deserialize))]
+pub struct WatchOnly {
+    // message fields
+    pub master_key_birthday_timestamp: u64,
+    pub master_key_fingerprint: ::std::vec::Vec<u8>,
+    pub accounts: ::protobuf::RepeatedField<WatchOnlyAccount>,
+    // special fields
+    #[cfg_attr(feature = "with-serde", serde(skip))]
+    pub unknown_fields: ::protobuf::UnknownFields,
+    #[cfg_attr(feature = "with-serde", serde(skip))]
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a WatchOnly {
+    fn default() -> &'a WatchOnly {
+        <WatchOnly as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl WatchOnly {
+    pub fn new() -> WatchOnly {
+        ::std::default::Default::default()
+    }
+
+    // uint64 master_key_birthday_timestamp = 1;
+
+
+    pub fn get_master_key_birthday_timestamp(&self) -> u64 {
+        self.master_key_birthday_timestamp
+    }
+    pub fn clear_master_key_birthday_timestamp(&mut self) {
+        self.master_key_birthday_timestamp = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_master_key_birthday_timestamp(&mut self, v: u64) {
+        self.master_key_birthday_timestamp = v;
+    }
+
+    // bytes master_key_fingerprint = 2;
+
+
+    pub fn get_master_key_fingerprint(&self) -> &[u8] {
+        &self.master_key_fingerprint
+    }
+    pub fn clear_master_key_fingerprint(&mut self) {
+        self.master_key_fingerprint.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_master_key_fingerprint(&mut self, v: ::std::vec::Vec<u8>) {
+        self.master_key_fingerprint = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_master_key_fingerprint(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.master_key_fingerprint
+    }
+
+    // Take field
+    pub fn take_master_key_fingerprint(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.master_key_fingerprint, ::std::vec::Vec::new())
+    }
+
+    // repeated .lnrpc.WatchOnlyAccount accounts = 3;
+
+
+    pub fn get_accounts(&self) -> &[WatchOnlyAccount] {
+        &self.accounts
+    }
+    pub fn clear_accounts(&mut self) {
+        self.accounts.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_accounts(&mut self, v: ::protobuf::RepeatedField<WatchOnlyAccount>) {
+        self.accounts = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_accounts(&mut self) -> &mut ::protobuf::RepeatedField<WatchOnlyAccount> {
+        &mut self.accounts
+    }
+
+    // Take field
+    pub fn take_accounts(&mut self) -> ::protobuf::RepeatedField<WatchOnlyAccount> {
+        ::std::mem::replace(&mut self.accounts, ::protobuf::RepeatedField::new())
+    }
+}
+
+impl ::protobuf::Message for WatchOnly {
+    fn is_initialized(&self) -> bool {
+        for v in &self.accounts {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.master_key_birthday_timestamp = tmp;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.master_key_fingerprint)?;
+                },
+                3 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.accounts)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.master_key_birthday_timestamp != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.master_key_birthday_timestamp, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.master_key_fingerprint.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.master_key_fingerprint);
+        }
+        for value in &self.accounts {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.master_key_birthday_timestamp != 0 {
+            os.write_uint64(1, self.master_key_birthday_timestamp)?;
+        }
+        if !self.master_key_fingerprint.is_empty() {
+            os.write_bytes(2, &self.master_key_fingerprint)?;
+        }
+        for v in &self.accounts {
+            os.write_tag(3, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> WatchOnly {
+        WatchOnly::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "master_key_birthday_timestamp",
+                |m: &WatchOnly| { &m.master_key_birthday_timestamp },
+                |m: &mut WatchOnly| { &mut m.master_key_birthday_timestamp },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "master_key_fingerprint",
+                |m: &WatchOnly| { &m.master_key_fingerprint },
+                |m: &mut WatchOnly| { &mut m.master_key_fingerprint },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<WatchOnlyAccount>>(
+                "accounts",
+                |m: &WatchOnly| { &m.accounts },
+                |m: &mut WatchOnly| { &mut m.accounts },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<WatchOnly>(
+                "WatchOnly",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static WatchOnly {
+        static instance: ::protobuf::rt::LazyV2<WatchOnly> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(WatchOnly::new)
+    }
+}
+
+impl ::protobuf::Clear for WatchOnly {
+    fn clear(&mut self) {
+        self.master_key_birthday_timestamp = 0;
+        self.master_key_fingerprint.clear();
+        self.accounts.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for WatchOnly {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for WatchOnly {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+#[cfg_attr(feature = "with-serde", derive(::serde::Serialize, ::serde::Deserialize))]
+pub struct WatchOnlyAccount {
+    // message fields
+    pub purpose: u32,
+    pub coin_type: u32,
+    pub account: u32,
+    pub xpub: ::std::string::String,
+    // special fields
+    #[cfg_attr(feature = "with-serde", serde(skip))]
+    pub unknown_fields: ::protobuf::UnknownFields,
+    #[cfg_attr(feature = "with-serde", serde(skip))]
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a WatchOnlyAccount {
+    fn default() -> &'a WatchOnlyAccount {
+        <WatchOnlyAccount as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl WatchOnlyAccount {
+    pub fn new() -> WatchOnlyAccount {
+        ::std::default::Default::default()
+    }
+
+    // uint32 purpose = 1;
+
+
+    pub fn get_purpose(&self) -> u32 {
+        self.purpose
+    }
+    pub fn clear_purpose(&mut self) {
+        self.purpose = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_purpose(&mut self, v: u32) {
+        self.purpose = v;
+    }
+
+    // uint32 coin_type = 2;
+
+
+    pub fn get_coin_type(&self) -> u32 {
+        self.coin_type
+    }
+    pub fn clear_coin_type(&mut self) {
+        self.coin_type = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_coin_type(&mut self, v: u32) {
+        self.coin_type = v;
+    }
+
+    // uint32 account = 3;
+
+
+    pub fn get_account(&self) -> u32 {
+        self.account
+    }
+    pub fn clear_account(&mut self) {
+        self.account = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_account(&mut self, v: u32) {
+        self.account = v;
+    }
+
+    // string xpub = 4;
+
+
+    pub fn get_xpub(&self) -> &str {
+        &self.xpub
+    }
+    pub fn clear_xpub(&mut self) {
+        self.xpub.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_xpub(&mut self, v: ::std::string::String) {
+        self.xpub = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_xpub(&mut self) -> &mut ::std::string::String {
+        &mut self.xpub
+    }
+
+    // Take field
+    pub fn take_xpub(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.xpub, ::std::string::String::new())
+    }
+}
+
+impl ::protobuf::Message for WatchOnlyAccount {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.purpose = tmp;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.coin_type = tmp;
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.account = tmp;
+                },
+                4 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.xpub)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.purpose != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.purpose, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.coin_type != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.coin_type, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.account != 0 {
+            my_size += ::protobuf::rt::value_size(3, self.account, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.xpub.is_empty() {
+            my_size += ::protobuf::rt::string_size(4, &self.xpub);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.purpose != 0 {
+            os.write_uint32(1, self.purpose)?;
+        }
+        if self.coin_type != 0 {
+            os.write_uint32(2, self.coin_type)?;
+        }
+        if self.account != 0 {
+            os.write_uint32(3, self.account)?;
+        }
+        if !self.xpub.is_empty() {
+            os.write_string(4, &self.xpub)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> WatchOnlyAccount {
+        WatchOnlyAccount::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "purpose",
+                |m: &WatchOnlyAccount| { &m.purpose },
+                |m: &mut WatchOnlyAccount| { &mut m.purpose },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "coin_type",
+                |m: &WatchOnlyAccount| { &m.coin_type },
+                |m: &mut WatchOnlyAccount| { &mut m.coin_type },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "account",
+                |m: &WatchOnlyAccount| { &m.account },
+                |m: &mut WatchOnlyAccount| { &mut m.account },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "xpub",
+                |m: &WatchOnlyAccount| { &m.xpub },
+                |m: &mut WatchOnlyAccount| { &mut m.xpub },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<WatchOnlyAccount>(
+                "WatchOnlyAccount",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static WatchOnlyAccount {
+        static instance: ::protobuf::rt::LazyV2<WatchOnlyAccount> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(WatchOnlyAccount::new)
+    }
+}
+
+impl ::protobuf::Clear for WatchOnlyAccount {
+    fn clear(&mut self) {
+        self.purpose = 0;
+        self.coin_type = 0;
+        self.account = 0;
+        self.xpub.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for WatchOnlyAccount {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for WatchOnlyAccount {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+#[cfg_attr(feature = "with-serde", derive(::serde::Serialize, ::serde::Deserialize))]
 pub struct UnlockWalletRequest {
     // message fields
     pub wallet_password: ::std::vec::Vec<u8>,
     pub recovery_window: i32,
-    pub channel_backups: ::protobuf::SingularPtrField<super::rpc::ChanBackupSnapshot>,
+    pub channel_backups: ::protobuf::SingularPtrField<super::lightning::ChanBackupSnapshot>,
     pub stateless_init: bool,
     // special fields
     #[cfg_attr(feature = "with-serde", serde(skip))]
@@ -1034,8 +1681,8 @@ impl UnlockWalletRequest {
     // .lnrpc.ChanBackupSnapshot channel_backups = 3;
 
 
-    pub fn get_channel_backups(&self) -> &super::rpc::ChanBackupSnapshot {
-        self.channel_backups.as_ref().unwrap_or_else(|| <super::rpc::ChanBackupSnapshot as ::protobuf::Message>::default_instance())
+    pub fn get_channel_backups(&self) -> &super::lightning::ChanBackupSnapshot {
+        self.channel_backups.as_ref().unwrap_or_else(|| <super::lightning::ChanBackupSnapshot as ::protobuf::Message>::default_instance())
     }
     pub fn clear_channel_backups(&mut self) {
         self.channel_backups.clear();
@@ -1046,13 +1693,13 @@ impl UnlockWalletRequest {
     }
 
     // Param is passed by value, moved
-    pub fn set_channel_backups(&mut self, v: super::rpc::ChanBackupSnapshot) {
+    pub fn set_channel_backups(&mut self, v: super::lightning::ChanBackupSnapshot) {
         self.channel_backups = ::protobuf::SingularPtrField::some(v);
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_channel_backups(&mut self) -> &mut super::rpc::ChanBackupSnapshot {
+    pub fn mut_channel_backups(&mut self) -> &mut super::lightning::ChanBackupSnapshot {
         if self.channel_backups.is_none() {
             self.channel_backups.set_default();
         }
@@ -1060,8 +1707,8 @@ impl UnlockWalletRequest {
     }
 
     // Take field
-    pub fn take_channel_backups(&mut self) -> super::rpc::ChanBackupSnapshot {
-        self.channel_backups.take().unwrap_or_else(|| super::rpc::ChanBackupSnapshot::new())
+    pub fn take_channel_backups(&mut self) -> super::lightning::ChanBackupSnapshot {
+        self.channel_backups.take().unwrap_or_else(|| super::lightning::ChanBackupSnapshot::new())
     }
 
     // bool stateless_init = 4;
@@ -1207,7 +1854,7 @@ impl ::protobuf::Message for UnlockWalletRequest {
                 |m: &UnlockWalletRequest| { &m.recovery_window },
                 |m: &mut UnlockWalletRequest| { &mut m.recovery_window },
             ));
-            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::rpc::ChanBackupSnapshot>>(
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::lightning::ChanBackupSnapshot>>(
                 "channel_backups",
                 |m: &UnlockWalletRequest| { &m.channel_backups },
                 |m: &mut UnlockWalletRequest| { &mut m.channel_backups },
@@ -1809,36 +2456,46 @@ impl ::protobuf::reflect::ProtobufValue for ChangePasswordResponse {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\x14walletunlocker.proto\x12\x05lnrpc\x1a\trpc.proto\"`\n\x0eGenSeedRe\
-    quest\x12+\n\x11aezeed_passphrase\x18\x01\x20\x01(\x0cR\x10aezeedPassphr\
-    ase\x12!\n\x0cseed_entropy\x18\x02\x20\x01(\x0cR\x0bseedEntropy\"l\n\x0f\
-    GenSeedResponse\x120\n\x14cipher_seed_mnemonic\x18\x01\x20\x03(\tR\x12ci\
-    pherSeedMnemonic\x12'\n\x0fenciphered_seed\x18\x02\x20\x01(\x0cR\x0eenci\
-    pheredSeed\"\xaf\x02\n\x11InitWalletRequest\x12'\n\x0fwallet_password\
-    \x18\x01\x20\x01(\x0cR\x0ewalletPassword\x120\n\x14cipher_seed_mnemonic\
-    \x18\x02\x20\x03(\tR\x12cipherSeedMnemonic\x12+\n\x11aezeed_passphrase\
-    \x18\x03\x20\x01(\x0cR\x10aezeedPassphrase\x12'\n\x0frecovery_window\x18\
-    \x04\x20\x01(\x05R\x0erecoveryWindow\x12B\n\x0fchannel_backups\x18\x05\
-    \x20\x01(\x0b2\x19.lnrpc.ChanBackupSnapshotR\x0echannelBackups\x12%\n\
-    \x0estateless_init\x18\x06\x20\x01(\x08R\rstatelessInit\";\n\x12InitWall\
-    etResponse\x12%\n\x0eadmin_macaroon\x18\x01\x20\x01(\x0cR\radminMacaroon\
-    \"\xd2\x01\n\x13UnlockWalletRequest\x12'\n\x0fwallet_password\x18\x01\
-    \x20\x01(\x0cR\x0ewalletPassword\x12'\n\x0frecovery_window\x18\x02\x20\
-    \x01(\x05R\x0erecoveryWindow\x12B\n\x0fchannel_backups\x18\x03\x20\x01(\
-    \x0b2\x19.lnrpc.ChanBackupSnapshotR\x0echannelBackups\x12%\n\x0estateles\
-    s_init\x18\x04\x20\x01(\x08R\rstatelessInit\"\x16\n\x14UnlockWalletRespo\
-    nse\"\xbf\x01\n\x15ChangePasswordRequest\x12)\n\x10current_password\x18\
-    \x01\x20\x01(\x0cR\x0fcurrentPassword\x12!\n\x0cnew_password\x18\x02\x20\
-    \x01(\x0cR\x0bnewPassword\x12%\n\x0estateless_init\x18\x03\x20\x01(\x08R\
-    \rstatelessInit\x121\n\x15new_macaroon_root_key\x18\x04\x20\x01(\x08R\
-    \x12newMacaroonRootKey\"?\n\x16ChangePasswordResponse\x12%\n\x0eadmin_ma\
-    caroon\x18\x01\x20\x01(\x0cR\radminMacaroon2\xa5\x02\n\x0eWalletUnlocker\
-    \x128\n\x07GenSeed\x12\x15.lnrpc.GenSeedRequest\x1a\x16.lnrpc.GenSeedRes\
-    ponse\x12A\n\nInitWallet\x12\x18.lnrpc.InitWalletRequest\x1a\x19.lnrpc.I\
-    nitWalletResponse\x12G\n\x0cUnlockWallet\x12\x1a.lnrpc.UnlockWalletReque\
-    st\x1a\x1b.lnrpc.UnlockWalletResponse\x12M\n\x0eChangePassword\x12\x1c.l\
-    nrpc.ChangePasswordRequest\x1a\x1d.lnrpc.ChangePasswordResponseB'Z%githu\
-    b.com/lightningnetwork/lnd/lnrpcb\x06proto3\
+    \n\x14walletunlocker.proto\x12\x05lnrpc\x1a\x0flightning.proto\"`\n\x0eG\
+    enSeedRequest\x12+\n\x11aezeed_passphrase\x18\x01\x20\x01(\x0cR\x10aezee\
+    dPassphrase\x12!\n\x0cseed_entropy\x18\x02\x20\x01(\x0cR\x0bseedEntropy\
+    \"l\n\x0fGenSeedResponse\x120\n\x14cipher_seed_mnemonic\x18\x01\x20\x03(\
+    \tR\x12cipherSeedMnemonic\x12'\n\x0fenciphered_seed\x18\x02\x20\x01(\x0c\
+    R\x0eencipheredSeed\"\xe4\x03\n\x11InitWalletRequest\x12'\n\x0fwallet_pa\
+    ssword\x18\x01\x20\x01(\x0cR\x0ewalletPassword\x120\n\x14cipher_seed_mne\
+    monic\x18\x02\x20\x03(\tR\x12cipherSeedMnemonic\x12+\n\x11aezeed_passphr\
+    ase\x18\x03\x20\x01(\x0cR\x10aezeedPassphrase\x12'\n\x0frecovery_window\
+    \x18\x04\x20\x01(\x05R\x0erecoveryWindow\x12B\n\x0fchannel_backups\x18\
+    \x05\x20\x01(\x0b2\x19.lnrpc.ChanBackupSnapshotR\x0echannelBackups\x12%\
+    \n\x0estateless_init\x18\x06\x20\x01(\x08R\rstatelessInit\x12.\n\x13exte\
+    nded_master_key\x18\x07\x20\x01(\tR\x11extendedMasterKey\x12R\n&extended\
+    _master_key_birthday_timestamp\x18\x08\x20\x01(\x04R\"extendedMasterKeyB\
+    irthdayTimestamp\x12/\n\nwatch_only\x18\t\x20\x01(\x0b2\x10.lnrpc.WatchO\
+    nlyR\twatchOnly\";\n\x12InitWalletResponse\x12%\n\x0eadmin_macaroon\x18\
+    \x01\x20\x01(\x0cR\radminMacaroon\"\xb9\x01\n\tWatchOnly\x12A\n\x1dmaste\
+    r_key_birthday_timestamp\x18\x01\x20\x01(\x04R\x1amasterKeyBirthdayTimes\
+    tamp\x124\n\x16master_key_fingerprint\x18\x02\x20\x01(\x0cR\x14masterKey\
+    Fingerprint\x123\n\x08accounts\x18\x03\x20\x03(\x0b2\x17.lnrpc.WatchOnly\
+    AccountR\x08accounts\"w\n\x10WatchOnlyAccount\x12\x18\n\x07purpose\x18\
+    \x01\x20\x01(\rR\x07purpose\x12\x1b\n\tcoin_type\x18\x02\x20\x01(\rR\x08\
+    coinType\x12\x18\n\x07account\x18\x03\x20\x01(\rR\x07account\x12\x12\n\
+    \x04xpub\x18\x04\x20\x01(\tR\x04xpub\"\xd2\x01\n\x13UnlockWalletRequest\
+    \x12'\n\x0fwallet_password\x18\x01\x20\x01(\x0cR\x0ewalletPassword\x12'\
+    \n\x0frecovery_window\x18\x02\x20\x01(\x05R\x0erecoveryWindow\x12B\n\x0f\
+    channel_backups\x18\x03\x20\x01(\x0b2\x19.lnrpc.ChanBackupSnapshotR\x0ec\
+    hannelBackups\x12%\n\x0estateless_init\x18\x04\x20\x01(\x08R\rstatelessI\
+    nit\"\x16\n\x14UnlockWalletResponse\"\xbf\x01\n\x15ChangePasswordRequest\
+    \x12)\n\x10current_password\x18\x01\x20\x01(\x0cR\x0fcurrentPassword\x12\
+    !\n\x0cnew_password\x18\x02\x20\x01(\x0cR\x0bnewPassword\x12%\n\x0estate\
+    less_init\x18\x03\x20\x01(\x08R\rstatelessInit\x121\n\x15new_macaroon_ro\
+    ot_key\x18\x04\x20\x01(\x08R\x12newMacaroonRootKey\"?\n\x16ChangePasswor\
+    dResponse\x12%\n\x0eadmin_macaroon\x18\x01\x20\x01(\x0cR\radminMacaroon2\
+    \xa5\x02\n\x0eWalletUnlocker\x128\n\x07GenSeed\x12\x15.lnrpc.GenSeedRequ\
+    est\x1a\x16.lnrpc.GenSeedResponse\x12A\n\nInitWallet\x12\x18.lnrpc.InitW\
+    alletRequest\x1a\x19.lnrpc.InitWalletResponse\x12G\n\x0cUnlockWallet\x12\
+    \x1a.lnrpc.UnlockWalletRequest\x1a\x1b.lnrpc.UnlockWalletResponse\x12M\n\
+    \x0eChangePassword\x12\x1c.lnrpc.ChangePasswordRequest\x1a\x1d.lnrpc.Cha\
+    ngePasswordResponseB'Z%github.com/lightningnetwork/lnd/lnrpcb\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

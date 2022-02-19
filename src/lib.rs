@@ -1,5 +1,5 @@
-pub mod rpc;
-pub mod rpc_grpc;
+pub mod lightning;
+pub mod lightning_grpc;
 pub mod invoices;
 pub mod invoices_grpc;
 pub mod walletunlocker;
@@ -10,7 +10,7 @@ pub mod router;
 pub mod router_grpc;
 
 use std::sync::Arc;
-use crate::rpc_grpc::LightningClient;
+use crate::lightning_grpc::LightningClient;
 use grpcio::{CallOption, MetadataBuilder, ChannelBuilder, ChannelCredentialsBuilder, EnvBuilder, Channel};
 use crate::walletunlocker_grpc::WalletUnlockerClient;
 use crate::stateservice_grpc::StateClient;
