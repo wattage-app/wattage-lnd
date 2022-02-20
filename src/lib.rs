@@ -17,6 +17,8 @@ use crate::stateservice_grpc::StateClient;
 use crate::invoices_grpc::InvoicesClient;
 use crate::router_grpc::RouterClient;
 
+pub use grpcio::{Result, Error};
+
 pub fn get_secure_channel_client(cert_path: &str, addr: &str) -> LightningClient {
     let ch = generate_secure_channel(cert_path, addr);
 
